@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{641C9C7C-EBB2-335E-A8C4-5BE30A7F6DBB}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\RTR_Demo\glfw-3.3.2\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule F:/RTR_Demo/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+F:\cmake\bin\cmake.exe -SF:/RTR_Demo -BF:/RTR_Demo/build --check-stamp-file F:/RTR_Demo/build/glfw-3.3.2/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\RTR_Demo\glfw-3.3.2\cmake_uninstall.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3.pc.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3Config.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw_config.h.in;F:\cmake\share\cmake-3.16\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;F:\cmake\share\cmake-3.16\Modules\CMakeDependentOption.cmake;F:\cmake\share\cmake-3.16\Modules\CMakePackageConfigHelpers.cmake;F:\cmake\share\cmake-3.16\Modules\CheckCSourceCompiles.cmake;F:\cmake\share\cmake-3.16\Modules\CheckIncludeFile.cmake;F:\cmake\share\cmake-3.16\Modules\CheckLibraryExists.cmake;F:\cmake\share\cmake-3.16\Modules\FindDoxygen.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageMessage.cmake;F:\cmake\share\cmake-3.16\Modules\FindThreads.cmake;F:\cmake\share\cmake-3.16\Modules\GNUInstallDirs.cmake;F:\cmake\share\cmake-3.16\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\RTR_Demo\build\glfw-3.3.2\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule F:/RTR_Demo/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+F:\cmake\bin\cmake.exe -SF:/RTR_Demo -BF:/RTR_Demo/build --check-stamp-file F:/RTR_Demo/build/glfw-3.3.2/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\RTR_Demo\glfw-3.3.2\cmake_uninstall.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3.pc.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3Config.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw_config.h.in;F:\cmake\share\cmake-3.16\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;F:\cmake\share\cmake-3.16\Modules\CMakeDependentOption.cmake;F:\cmake\share\cmake-3.16\Modules\CMakePackageConfigHelpers.cmake;F:\cmake\share\cmake-3.16\Modules\CheckCSourceCompiles.cmake;F:\cmake\share\cmake-3.16\Modules\CheckIncludeFile.cmake;F:\cmake\share\cmake-3.16\Modules\CheckLibraryExists.cmake;F:\cmake\share\cmake-3.16\Modules\FindDoxygen.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageMessage.cmake;F:\cmake\share\cmake-3.16\Modules\FindThreads.cmake;F:\cmake\share\cmake-3.16\Modules\GNUInstallDirs.cmake;F:\cmake\share\cmake-3.16\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\RTR_Demo\build\glfw-3.3.2\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule F:/RTR_Demo/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+F:\cmake\bin\cmake.exe -SF:/RTR_Demo -BF:/RTR_Demo/build --check-stamp-file F:/RTR_Demo/build/glfw-3.3.2/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:\RTR_Demo\glfw-3.3.2\cmake_uninstall.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3.pc.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3Config.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw_config.h.in;F:\cmake\share\cmake-3.16\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;F:\cmake\share\cmake-3.16\Modules\CMakeDependentOption.cmake;F:\cmake\share\cmake-3.16\Modules\CMakePackageConfigHelpers.cmake;F:\cmake\share\cmake-3.16\Modules\CheckCSourceCompiles.cmake;F:\cmake\share\cmake-3.16\Modules\CheckIncludeFile.cmake;F:\cmake\share\cmake-3.16\Modules\CheckLibraryExists.cmake;F:\cmake\share\cmake-3.16\Modules\FindDoxygen.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageMessage.cmake;F:\cmake\share\cmake-3.16\Modules\FindThreads.cmake;F:\cmake\share\cmake-3.16\Modules\GNUInstallDirs.cmake;F:\cmake\share\cmake-3.16\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:\RTR_Demo\build\glfw-3.3.2\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule F:/RTR_Demo/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+F:\cmake\bin\cmake.exe -SF:/RTR_Demo -BF:/RTR_Demo/build --check-stamp-file F:/RTR_Demo/build/glfw-3.3.2/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:\RTR_Demo\glfw-3.3.2\cmake_uninstall.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3.pc.in;F:\RTR_Demo\glfw-3.3.2\src\glfw3Config.cmake.in;F:\RTR_Demo\glfw-3.3.2\src\glfw_config.h.in;F:\cmake\share\cmake-3.16\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;F:\cmake\share\cmake-3.16\Modules\CMakeDependentOption.cmake;F:\cmake\share\cmake-3.16\Modules\CMakePackageConfigHelpers.cmake;F:\cmake\share\cmake-3.16\Modules\CheckCSourceCompiles.cmake;F:\cmake\share\cmake-3.16\Modules\CheckIncludeFile.cmake;F:\cmake\share\cmake-3.16\Modules\CheckLibraryExists.cmake;F:\cmake\share\cmake-3.16\Modules\FindDoxygen.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;F:\cmake\share\cmake-3.16\Modules\FindPackageMessage.cmake;F:\cmake\share\cmake-3.16\Modules\FindThreads.cmake;F:\cmake\share\cmake-3.16\Modules\GNUInstallDirs.cmake;F:\cmake\share\cmake-3.16\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:\RTR_Demo\build\glfw-3.3.2\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="F:\RTR_Demo\build\ZERO_CHECK.vcxproj">
+      <Project>{5B8B104F-8BB5-33B6-A30A-51833C8C8253}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\boing.vcxproj">
+      <Project>{6EC66A5F-7A16-377F-B5A6-9600EC66A7C7}</Project>
+      <Name>boing</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\clipboard.vcxproj">
+      <Project>{17C594B9-7083-3E5B-A6E7-BF4F90738D4B}</Project>
+      <Name>clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\cursor.vcxproj">
+      <Project>{42E4D546-B6A7-304A-BC22-C25FEFD578D9}</Project>
+      <Name>cursor</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\docs\docs.vcxproj">
+      <Project>{5131C577-087B-3458-A9DE-59D0D73C8E0B}</Project>
+      <Name>docs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\empty.vcxproj">
+      <Project>{591B9FD0-62BB-33C9-A492-8DB4DE67A58D}</Project>
+      <Name>empty</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\events.vcxproj">
+      <Project>{046CABE7-2855-3490-B13F-2AF8E7B10F95}</Project>
+      <Name>events</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\gamma.vcxproj">
+      <Project>{CF105406-0225-3549-ADF5-D3979C0F2864}</Project>
+      <Name>gamma</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\gears.vcxproj">
+      <Project>{FB6311AD-118A-33E6-B793-D223887AD08F}</Project>
+      <Name>gears</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\src\glfw.vcxproj">
+      <Project>{0E282A08-862F-3008-97FA-F94D366F1E79}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\glfwinfo.vcxproj">
+      <Project>{2B0EC404-7116-301A-8A4D-69FA74D777F9}</Project>
+      <Name>glfwinfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\heightmap.vcxproj">
+      <Project>{2C5EF6B1-268D-3CBC-85F9-D0EAC874D73A}</Project>
+      <Name>heightmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\icon.vcxproj">
+      <Project>{A7469547-2F60-32C7-B19C-86241735B59B}</Project>
+      <Name>icon</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\iconify.vcxproj">
+      <Project>{B36E4B59-C90D-3E0E-A41F-8BC37D7AD238}</Project>
+      <Name>iconify</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\inputlag.vcxproj">
+      <Project>{244FC4E9-B200-38D9-9744-BF184FAAFD74}</Project>
+      <Name>inputlag</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\joysticks.vcxproj">
+      <Project>{9E267503-0A14-3900-B56F-9DFD9D7BE9A1}</Project>
+      <Name>joysticks</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\monitors.vcxproj">
+      <Project>{C4137098-4829-305D-82F7-A0826A203BA6}</Project>
+      <Name>monitors</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\msaa.vcxproj">
+      <Project>{29CE1589-A1A4-39F7-8C69-9EDA6DE46DBD}</Project>
+      <Name>msaa</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\offscreen.vcxproj">
+      <Project>{F923D71C-7FBF-3BDD-A75D-5AEE059CBF10}</Project>
+      <Name>offscreen</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\opacity.vcxproj">
+      <Project>{42711026-477A-3055-AE6A-E3127B962CA1}</Project>
+      <Name>opacity</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\particles.vcxproj">
+      <Project>{0B6D9C57-7956-3465-AEBF-90F15CF49193}</Project>
+      <Name>particles</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\reopen.vcxproj">
+      <Project>{9D7D1148-EC21-37D6-BD6C-3F712BE95CC2}</Project>
+      <Name>reopen</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\sharing.vcxproj">
+      <Project>{F3DE8178-A586-3448-B33D-561C080C624B}</Project>
+      <Name>sharing</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\simple.vcxproj">
+      <Project>{E7DF6030-2AAF-3E57-8DFB-6BE495B2C257}</Project>
+      <Name>simple</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\splitview.vcxproj">
+      <Project>{69B0E943-CABB-3312-8FB8-53DC717641D7}</Project>
+      <Name>splitview</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\tearing.vcxproj">
+      <Project>{D3AFD644-EBA8-31A7-BCA3-223B5EDE58D1}</Project>
+      <Name>tearing</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\threads.vcxproj">
+      <Project>{A28C8840-1F1B-346A-BC49-CDE4B33E0F9F}</Project>
+      <Name>threads</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\timeout.vcxproj">
+      <Project>{2F3074AF-B68E-3866-9DB5-57FF234738EB}</Project>
+      <Name>timeout</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\title.vcxproj">
+      <Project>{35D955D2-5D6C-3F19-B9DF-EF56F0565DEF}</Project>
+      <Name>title</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\triangle-vulkan.vcxproj">
+      <Project>{D5680D59-67AF-362D-9E9B-F29F29649011}</Project>
+      <Name>triangle-vulkan</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\examples\wave.vcxproj">
+      <Project>{C0DE13E9-0A1D-39D3-9E72-B1F0BD33E1EA}</Project>
+      <Name>wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\RTR_Demo\build\glfw-3.3.2\tests\windows.vcxproj">
+      <Project>{7441B882-2A79-3F08-8C31-743352D867C3}</Project>
+      <Name>windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

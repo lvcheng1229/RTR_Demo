@@ -1,6 +1,8 @@
 ﻿
 #include"TestDemo/TestDemo.h"
 #include"ModelDemo/ModelDemo.h"
+#include"ShadowMap.h"
+#include"CSM.h"
 #include"UltSetting.h"
 
 #include "imgui.h"
@@ -12,10 +14,12 @@ class ListUI
 public:
 	TestDemo td;
 	ModelDemo md;
+	ShadowMap shadowMap;
+	CSM csm;
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &td;
+		rloop = &csm;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -27,11 +31,21 @@ public:
 		ImGui::Text("M:forbid mouse move\nN:allow mouse move");
 		if (ImGui::CollapsingHeader("Test"))
 		{
-			ImGui::BeginChild("ChildR", ImVec2(0, 80), true, ImGuiWindowFlags_MenuBar);
+			ImGui::BeginChild("Child1", ImVec2(0, 80), true, ImGuiWindowFlags_MenuBar);
 			ImGui::Columns(1);
 			if(ImGui::Button("TestDemo", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&td);
 			ImGui::NextColumn();
 			if(ImGui::Button("ModelDemo", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&md);
+			ImGui::NextColumn();
+			ImGui::EndChild();
+		}
+		if (ImGui::CollapsingHeader("Shadow"))
+		{
+			ImGui::BeginChild("Child2", ImVec2(0, 80), true, ImGuiWindowFlags_MenuBar);
+			ImGui::Columns(1);
+			if(ImGui::Button("ShadowMap", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&shadowMap);
+			ImGui::NextColumn();
+			if(ImGui::Button("CSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&csm);
 			ImGui::NextColumn();
 			ImGui::EndChild();
 		}

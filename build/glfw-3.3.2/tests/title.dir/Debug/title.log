@@ -1,0 +1,6 @@
+﻿  Building Custom Rule F:/RTR_Demo/glfw-3.3.2/tests/CMakeLists.txt
+  title.c
+F:\RTR_Demo\glfw-3.3.2\tests\title.c : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  glad_gl.c
+  正在生成代码...
+  title.vcxproj -> F:\RTR_Demo\build\glfw-3.3.2\tests\Debug\title.exe

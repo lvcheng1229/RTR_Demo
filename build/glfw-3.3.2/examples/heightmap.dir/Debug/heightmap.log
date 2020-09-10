@@ -1,0 +1,5 @@
+﻿  Building Custom Rule F:/RTR_Demo/glfw-3.3.2/examples/CMakeLists.txt
+  heightmap.c
+  glad_gl.c
+  正在生成代码...
+  heightmap.vcxproj -> F:\RTR_Demo\build\glfw-3.3.2\examples\Debug\heightmap.exe

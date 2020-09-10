@@ -1,0 +1,5 @@
+﻿  Building Custom Rule F:/RTR_Demo/glfw-3.3.2/examples/CMakeLists.txt
+  offscreen.c
+  glad_gl.c
+  正在生成代码...
+  offscreen.vcxproj -> F:\RTR_Demo\build\glfw-3.3.2\examples\Debug\offscreen.exe
