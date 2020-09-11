@@ -158,21 +158,13 @@ public:
 		model = glm::scale(model, glm::vec3(0.5f));
 		shader->setMat4("model", model);
 		renderCube->drawObject();
+
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-1.0f, -2.0f, 0.0));
-		model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-		model = glm::scale(model, glm::vec3(0.25));
+		model = glm::translate(model, glm::vec3(-1.0f, -1.5f, -4.0));
+		model = glm::scale(model, glm::vec3(0.5f));
 		shader->setMat4("model", model);
 		renderCube->drawObject();
 
-		/*model = glm::mat4(1.0f);
-		float hf2 = 0.1*tan(camera.Zoom / 2.0*3.1415926535 / 180.0);
-		glm::vec3 z = camera.Position + glm::normalize(camera.Front)*0.1f 
-			+ glm::normalize(camera.Up)*hf2 + glm::normalize(camera.Right)*hf2*(float)SCR_WIDTH / (float)SCR_HEIGHT;
-		model = glm::translate(model, z);
-		model = glm::scale(model, glm::vec3(0.001));
-		shader->setMat4("model", model);
-		renderCube->drawObject();*/
 	}
 	void exit()
 	{

@@ -1,10 +1,14 @@
 ﻿
 #include"TestDemo/TestDemo.h"
 #include"ModelDemo/ModelDemo.h"
+
+//Shadow
 #include"ShadowMap.h"
 #include"CSM.h"
-#include"UltSetting.h"
+#include"PCF.h"
+#include"PCSS.h"
 
+#include"UltSetting.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -14,12 +18,16 @@ class ListUI
 public:
 	TestDemo td;
 	ModelDemo md;
+	//Shadow
 	ShadowMap shadowMap;
 	CSM csm;
+	PCF pcf;
+	PCSS pcss;
+
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &csm;
+		rloop = &pcss;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -41,12 +49,12 @@ public:
 		}
 		if (ImGui::CollapsingHeader("Shadow"))
 		{
-			ImGui::BeginChild("Child2", ImVec2(0, 80), true, ImGuiWindowFlags_MenuBar);
+			ImGui::BeginChild("Child2", ImVec2(0, 120), true, ImGuiWindowFlags_MenuBar);
 			ImGui::Columns(1);
 			if(ImGui::Button("ShadowMap", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&shadowMap);
-			ImGui::NextColumn();
 			if(ImGui::Button("CSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&csm);
-			ImGui::NextColumn();
+			if(ImGui::Button("PCF", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pcf);
+			if(ImGui::Button("PCSS", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pcss);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
