@@ -7,6 +7,10 @@
 #include"CSM.h"
 #include"PCF.h"
 #include"PCSS.h"
+#include"VSM.h"
+#include"ESM.h"
+#include"ImprovedESM.h"
+#include"ConvolutionSM.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -23,11 +27,15 @@ public:
 	CSM csm;
 	PCF pcf;
 	PCSS pcss;
+	VSM vsm;
+	ESM esm;
+	ImprovedESM improvedesm;
+	ConvolutionSM convolutionsm;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &pcss;
+		rloop = &convolutionsm;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -55,6 +63,10 @@ public:
 			if(ImGui::Button("CSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&csm);
 			if(ImGui::Button("PCF", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pcf);
 			if(ImGui::Button("PCSS", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pcss);
+			if(ImGui::Button("VSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&vsm);
+			if(ImGui::Button("ESM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&esm);
+			if(ImGui::Button("ImprovedESM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&improvedesm);
+			if(ImGui::Button("ConvolutionSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&convolutionsm);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

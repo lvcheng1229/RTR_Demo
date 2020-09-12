@@ -127,8 +127,7 @@ public:
 				frustumPos[i][j] = tempVec;
 			}
 		}
-
-		
+	
 		glm::mat4 PMat[4];
 		glm::mat4 lightSpaceMatrix[4];
 		for (int i = 0; i < N; i++)
@@ -150,15 +149,15 @@ public:
 				}
 			}
 			//根据最大值和最小值改变平行光的视锥体，以使光源视锥体紧密包含相机子视椎体
-			float Wx = (maxp[0] - minp[0]) / 2.0;
-			float Wy = (maxp[1] - minp[1]) / 2.0;
+			//float Wx = (maxp[0] - minp[0]) / 2.0;
+			//float Wy = (maxp[1] - minp[1]) / 2.0;
+			float Wx = (maxp[0] - minp[0]);
+			float Wy = (maxp[1] - minp[1]);
 			float Ox = 0.5*(maxp[0] + minp[0]);
 			float Oy = 0.5*(maxp[1] + minp[1]);
 			glm::vec3 newLightpos = lightPos + lightRight * Ox + lightUp * Oy;
 			
-			//将视锥体放大，避免出现在在不同深度图之间跳跃时产生不连贯现象
-			glm::mat4 P = glm::ortho(-Wx*1.4f, Wx*1.4f, -Wy*1.4f, Wy*1.4f,0.1f, 30.0f);
-
+			glm::mat4 P = glm::ortho(-Wx, Wx, -Wy, Wy,0.1f, 30.0f);
 			glm::mat4 newLightView = glm::lookAt(lightPos, lightPos + lightDir, lightUp);
 			lightSpaceMatrix[i] = P * newLightView;
 		}
@@ -286,6 +285,7 @@ public:
 		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
 		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
 		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::Text("Some erros may exsist\nin line 154 and 155");
 		ImGui::End();
 	}
 };

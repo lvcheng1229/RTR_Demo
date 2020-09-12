@@ -16,11 +16,9 @@ f:\rtr_demo\core\CSM.h(39): warning C4018: “<=”: 有符号/无符号不匹�
 f:\rtr_demo\core\CSM.h(92): warning C4018: “<=”: 有符号/无符号不匹配
 f:\rtr_demo\core\CSM.h(95): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\CSM.h(118): warning C4018: “<=”: 有符号/无符号不匹配
-f:\rtr_demo\core\CSM.h(134): warning C4018: “<”: 有符号/无符号不匹配
-f:\rtr_demo\core\CSM.h(153): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-f:\rtr_demo\core\CSM.h(154): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-f:\rtr_demo\core\CSM.h(155): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\CSM.h(133): warning C4018: “<”: 有符号/无符号不匹配
 f:\rtr_demo\core\CSM.h(156): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\CSM.h(157): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\PCF.h(139): warning C4838: 从“double”转换到“float”需要收缩转换
 f:\rtr_demo\core\PCF.h(136): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\PCF.h(137): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
@@ -33,5 +31,6 @@ f:\rtr_demo\core\PCF.h(199): warning C4838: 从“double”转换到“float”�
 f:\rtr_demo\core\PCF.h(196): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\PCF.h(197): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\PCF.h(198): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-F:\RTR_Demo\Core\main.cpp(107): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\ConvolutionSM.h(107): warning C4305: “参数”: 从“double”到“float”截断
+F:\RTR_Demo\Core\main.cpp(120): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   Core.vcxproj -> F:\RTR_Demo\build\Core\Debug\Core.exe

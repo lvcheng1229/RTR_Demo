@@ -23,7 +23,7 @@ uniform mat4 lightSpaceMatrix[4];
 float ShadowCompute()
 {
     //计算该点的深度，方法为F-V向量在Front上的投影
-    float d=length(dot((FragPos-viewPos),normalize(Front)));
+    float d=dot((FragPos-viewPos),normalize(Front));
       
     int index=3;
 
