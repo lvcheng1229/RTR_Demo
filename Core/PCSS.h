@@ -32,6 +32,8 @@ public:
 	int u_pcf_filter_samples_idx     = 1;
 
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	float LPos[3];
 	void initDemo()
 	{
 		SetDemoName("PCSS");
@@ -47,6 +49,11 @@ public:
 		int u_PCFSamples = 25;
 		int u_blocker_search_samples_idx = 2;
 		int u_pcf_filter_samples_idx     = 2;
+
+		for (int i = 0; i < 3; i++)
+		{
+			LPos[i] = lightPos[i];
+		}
 	}
 
 	void SettingBeforLoop()
@@ -61,6 +68,8 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 		float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -205,9 +214,12 @@ public:
 		ImGui::SliderFloat("Light Bias", &u_LightBias, 0.0f, 1.0f);
 		ImGui::InputFloat("Light Near", &u_LightNear);
 		ImGui::InputFloat("Light Far", &u_LightFar);
-		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
+
+		for (int i = 0; i < 3; i++)
+		{
+			lightPos[i] = LPos[i];
+		}
 
 		{
 			const char* listbox_items[] = { "4","25", "32", "64", "100", "128" };

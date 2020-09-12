@@ -11,6 +11,8 @@
 #include"ESM.h"
 #include"ImprovedESM.h"
 #include"ConvolutionSM.h"
+#include"ShadowVolume.h"
+#include"ProjectionShadow.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -31,11 +33,13 @@ public:
 	ESM esm;
 	ImprovedESM improvedesm;
 	ConvolutionSM convolutionsm;
+	ShadowVolume shadowvolume;
+	ProjectionShadow projectionshadow;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &convolutionsm;
+		rloop = &projectionshadow;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -55,9 +59,9 @@ public:
 			ImGui::NextColumn();
 			ImGui::EndChild();
 		}
-		if (ImGui::CollapsingHeader("Shadow"))
+		if (ImGui::CollapsingHeader("Shadow(10Demos)"))
 		{
-			ImGui::BeginChild("Child2", ImVec2(0, 120), true, ImGuiWindowFlags_MenuBar);
+			ImGui::BeginChild("Child2", ImVec2(0, 260), true, ImGuiWindowFlags_MenuBar);
 			ImGui::Columns(1);
 			if(ImGui::Button("ShadowMap", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&shadowMap);
 			if(ImGui::Button("CSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&csm);
@@ -67,6 +71,8 @@ public:
 			if(ImGui::Button("ESM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&esm);
 			if(ImGui::Button("ImprovedESM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&improvedesm);
 			if(ImGui::Button("ConvolutionSM", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&convolutionsm);
+			if(ImGui::Button("ShadowVolume", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&shadowvolume);
+			if(ImGui::Button("ProjectionShadow", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&projectionshadow);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

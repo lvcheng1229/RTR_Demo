@@ -24,6 +24,8 @@ public:
 	bool slope_scale_bias;
 	float bias;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	float LPos[3];
 	void initDemo()
 	{
 		SetDemoName("ShadowMap");
@@ -32,6 +34,11 @@ public:
 		second_depth_method = false;
 		bias = 0.05;
 		slope_scale_bias = false;
+
+		for (int i = 0; i < 3; i++)
+		{
+			LPos[i] = lightPos[i];
+		}
 	}
 
 	void SettingBeforLoop()
@@ -189,9 +196,13 @@ public:
 		ImGui::SliderFloat("Bias", &bias, 0.f, 0.3f);
 		ImGui::Checkbox("SecondDepthMathod", &second_depth_method);
 		ImGui::Checkbox("slope_scale_bias", & slope_scale_bias);
-		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
+
+		for (int i = 0; i < 3; i++)
+		{
+			lightPos[i] = LPos[i];
+		}
+
 		ImGui::End();
 	}
 };

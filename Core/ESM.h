@@ -22,10 +22,17 @@ public:
 	float c = 25;
 
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	float LPos[3];
 	void initDemo()
 	{
 		SetDemoName("ESM");
 		lightPos = glm::vec3(-2.0f, 4.0f, -1.0f);
+
+		for (int i = 0; i < 3; i++)
+		{
+			LPos[i] = lightPos[i];
+		}
 	}
 
 	void SettingBeforLoop()
@@ -162,9 +169,12 @@ public:
 		bool show_window = true;
 		ImGui::Begin("ESM", &show_window, ImGuiWindowFlags_MenuBar);
 
-		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
+
+		for (int i = 0; i < 3; i++)
+		{
+			lightPos[i] = LPos[i];
+		}
 
 		ImGui::SliderFloat("C", &c,0.0f,88.0f);
 		ImGui::End();

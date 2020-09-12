@@ -24,6 +24,8 @@ public:
 	float zfar_i[4 + 1];
 	float nearp = 1, farp = 100.0;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	float LPos[3];
 	void initDemo()
 	{
 		SetDemoName("CSM");
@@ -31,6 +33,11 @@ public:
 		
 		nearp = 1; 
 		farp = 100.0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			LPos[i] = lightPos[i];
+		}
 	}
 
 	void SettingBeforLoop()
@@ -282,9 +289,12 @@ public:
 	{
 		bool show_window = true;
 		ImGui::Begin("CSM", &show_window, ImGuiWindowFlags_MenuBar);
-		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
+
+		for (int i = 0; i < 3; i++)
+		{
+			lightPos[i] = LPos[i];
+		}
 		ImGui::Text("Some erros may exsist\nin line 154 and 155");
 		ImGui::End();
 	}

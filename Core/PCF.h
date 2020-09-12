@@ -24,6 +24,8 @@ public:
 	float bias;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	int type = 1;
+
+	float LPos[3];
 	void initDemo()
 	{
 		SetDemoName("PCF");
@@ -31,6 +33,11 @@ public:
 
 		bias = 0.5;
 		type = 1;
+
+		for (int i = 0; i < 3; i++)
+		{
+			LPos[i] = lightPos[i];
+		}
 	}
 
 	void SettingBeforLoop()
@@ -264,9 +271,12 @@ public:
 		bool show_window = true;
 		ImGui::Begin("PCF", &show_window, ImGuiWindowFlags_MenuBar);
 		ImGui::SliderFloat("Bias", &bias, 0.f, 1.f);
-		ImGui::SliderFloat("LightPoxX", &lightPos.x, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxY", &lightPos.y, -4.f, 4.f);
-		ImGui::SliderFloat("LightPoxZ", &lightPos.z, -4.f, 4.f);
+		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
+
+		for (int i = 0; i < 3; i++)
+		{
+			lightPos[i] = LPos[i];
+		}
 		ImGui::Text("1:3x3 grid pattern\n2:4 Posisson samples\n3:3x3 guassian filter\n4:random 9 samples\n5:no pcf ");
 		ImGui::SliderInt("Type",&type,1,5);	
 		ImGui::End();
