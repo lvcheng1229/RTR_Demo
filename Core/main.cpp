@@ -18,6 +18,7 @@
 //NPR
 #include"OutlineRendering_NormalEdge.h"
 #include"OutlineRendering_ProceGeoSil_Zbias_Shell.h"
+#include"OutlineRendering_ProceGeoSil_FattenTriangle.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -47,11 +48,12 @@ public:
 	//NPR
 	OutlineRendering_NormalEdge or_normaledge;
 	OutlineRendering_ProceGeoSil or_procegeosil_zbias_shell;
+	OutlineRendering_ProceGeoSil_FattenTriangle or_procegeosil_fattentriangle;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &or_procegeosil_zbias_shell;
+		rloop = &or_procegeosil_fattentriangle;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -93,6 +95,7 @@ public:
 			ImGui::Columns(1);
 			if(ImGui::Button("OR_NormalEdge", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_normaledge);
 			if(ImGui::Button("OR_ProceGeoSil_Zbias_Shell", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_zbias_shell);
+			if(ImGui::Button("OR_ProceGeoSil_FattenTriangle", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_fattentriangle);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

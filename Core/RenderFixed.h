@@ -40,9 +40,9 @@ public:
 	void attributeSetting()
 	{
 		float vertics[] = {
-			0.0f,0.0f,0.0f,		0.0f,1.0f,0.0f,	0.0f,0.0f,
-			0.0f,0.0f,-1.0f,	0.0f,1.0f,0.0f,	0.0f,1.0f,
+			0.0f,0.0f,0.0f,		0.0f,1.0f,0.0f,	0.0f,0.0f,	
 			1.0f,0.0f,-1.0f,	0.0f,1.0f,0.0f,	1.0f,1.0f,
+			0.0f,0.0f,-1.0f,	0.0f,1.0f,0.0f,	0.0f,1.0f,
 		};
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
