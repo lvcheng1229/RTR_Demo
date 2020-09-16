@@ -102,17 +102,17 @@ public:
 			if (!oddRow) // even rows: y == 0, y == 2; and so on
 			{
 				for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
-				{
-					indices.push_back(y       * (X_SEGMENTS + 1) + x);
+				{					
 					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+					indices.push_back(y       * (X_SEGMENTS + 1) + x);
 				}
 			}
 			else
 			{
 				for (int x = X_SEGMENTS; x >= 0; --x)
-				{
-					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				{					
 					indices.push_back(y       * (X_SEGMENTS + 1) + x);
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
 				}
 			}
 			oddRow = !oddRow;

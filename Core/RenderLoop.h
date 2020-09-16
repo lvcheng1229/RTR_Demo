@@ -5,6 +5,7 @@
 #include"shader.h"
 #include"RenderFixed.h"
 #include"UltSetting.h"
+#include"Model.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

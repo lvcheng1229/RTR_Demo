@@ -83,10 +83,11 @@ public:
 		model = glm::rotate(model,glm::radians(RoateAngle[0]), glm::vec3(1, 0, 0));
 		model = glm::rotate(model,glm::radians(RoateAngle[1]), glm::vec3(0, 1, 0));
 		model = glm::rotate(model,glm::radians(RoateAngle[2]), glm::vec3(0, 0, 1));
-
+		//绘制阴影接收平面
 		commonShader->setMat4("model", model);
 		renderedQuad->drawObject();
 		
+		//计算阴影接收平面的norm
 		glm::vec3 norm=glm::normalize(glm::mat3(glm::transpose(glm::inverse(model)))*glm::vec3(0,1,0));
 		glm::vec3 worldPos=glm::vec3(model*glm::vec4(0,0,0,1.0));
 		
@@ -99,6 +100,8 @@ public:
 			-lightPos.z*norm.x,-lightPos.z*norm.y,glm::dot(norm,lightPos)+d-lightPos.z*norm.z,-lightPos.z*d,
 			-norm.x,-norm.y,-norm.z,glm::dot(norm,lightPos)
 		};
+
+		//立方体的绘制阴影
 		projectToPlane = glm::transpose(projectToPlane);
 		model = glm::mat4(1.0f);
 		model *= projectToPlane;

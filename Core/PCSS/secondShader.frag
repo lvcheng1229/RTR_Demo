@@ -118,6 +118,12 @@ float pcss_filter(vec2 uv, float z, float bias, float z_vs)
     {
         return 1.0;
     }   
+
+    if(num_blockers==u_BlockerSearchSamples)
+    {
+        return 0.0;
+    }
+    
     float avg_blocker_depth = accum_blocker_depth / num_blockers;
 
 
