@@ -17,7 +17,6 @@ public:
 
 	Model *bunny;
 
-	GLuint containerTexture;
 	glm::vec3 lightPos;
 
 	float LPos[3];
@@ -43,7 +42,6 @@ public:
 	//-----------------------------------------------
 	void SettingBeforLoop()
 	{			
-		containerTexture = loadTexture("../../Core/PublicResource/container.jpg");
 		BackfaceShader = new Shader("../../Core/OutlineRendering/fattenTriProceGeoSil.vert", "../../Core/OutlineRendering/fattenTriProceGeoSil.frag", "../../Core/OutlineRendering/fattenTriProceGeoSil.geom");
 		FrontFaceShader = new Shader("../../Core/PublicResource/noTexShader.vert", "../../Core/PublicResource/noTexShader.frag");
 		bunny = new Model("../../Core/PublicResource/bunny.obj");
@@ -59,7 +57,7 @@ public:
 	{
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(91.0 / 255.0, 194.0 / 255.0, 231.0 / 255.0, 1.0);
+		glClearColor(91.0 / 255.0, 194.0 / 255.0, 231.0 / 255.0, 1.0);//ÆëÂíÀ¶
 
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -112,8 +110,6 @@ public:
 	}
 	void exit()
 	{
-		glDeleteTextures(1, &containerTexture);
-
 		renderCube->exit();
 		renderSphere->exit();
 

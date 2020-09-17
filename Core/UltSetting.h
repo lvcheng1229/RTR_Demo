@@ -58,8 +58,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	lastX = xpos;
 	lastY = ypos;
-	//if(MouseMove)
-		//camera.ProcessMouseMovement(xoffset, yoffset);
+	if(MouseMove)
+		camera.ProcessMouseMovement(xoffset, yoffset);
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {

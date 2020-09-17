@@ -19,6 +19,8 @@
 #include"OutlineRendering_NormalEdge.h"
 #include"OutlineRendering_ProceGeoSil_Zbias_Shell.h"
 #include"OutlineRendering_ProceGeoSil_FattenTriangle.h"
+#include"OutlineRendering_ImageBased.h"
+
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -49,11 +51,12 @@ public:
 	OutlineRendering_NormalEdge or_normaledge;
 	OutlineRendering_ProceGeoSil or_procegeosil_zbias_shell;
 	OutlineRendering_ProceGeoSil_FattenTriangle or_procegeosil_fattentriangle;
+	OutlineRendering_ImageBased or_imagebased;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &or_procegeosil_fattentriangle;
+		rloop = &or_imagebased;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -96,6 +99,7 @@ public:
 			if(ImGui::Button("OR_NormalEdge", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_normaledge);
 			if(ImGui::Button("OR_ProceGeoSil_Zbias_Shell", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_zbias_shell);
 			if(ImGui::Button("OR_ProceGeoSil_FattenTriangle", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_fattentriangle);
+			if(ImGui::Button("OR_ImageBased", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_imagebased);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
