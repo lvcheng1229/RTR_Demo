@@ -19,7 +19,6 @@ public:
 		commonShader =new Shader("../../Core/PublicResource/commonshader.vs", "../../Core/PublicResource/commonshader.fs");
 
 		mymodel =new  Model("../../Core/PublicResource/nanosuit/nanosuit.obj");
-	
 		commonShader->use();
 		commonShader->setInt("sampleTexture", 0);
 

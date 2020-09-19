@@ -20,7 +20,10 @@
 #include"OutlineRendering_ProceGeoSil_Zbias_Shell.h"
 #include"OutlineRendering_ProceGeoSil_FattenTriangle.h"
 #include"OutlineRendering_ImageBased.h"
-
+#include"XToon_HighLight.h"
+#include"XToon_BackLight.h"
+#include"XToon_AerialPerspective.h"
+#include"Lines.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -52,11 +55,15 @@ public:
 	OutlineRendering_ProceGeoSil or_procegeosil_zbias_shell;
 	OutlineRendering_ProceGeoSil_FattenTriangle or_procegeosil_fattentriangle;
 	OutlineRendering_ImageBased or_imagebased;
+	XToon_HighLight xtoon_highlight;
+	XToon_BackLight xtoon_backlight;
+	XToon_AerialPerspective xtoon_aerialperspective;
+	NPRLines nprlines;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &or_imagebased;
+		rloop = &nprlines;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -100,6 +107,10 @@ public:
 			if(ImGui::Button("OR_ProceGeoSil_Zbias_Shell", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_zbias_shell);
 			if(ImGui::Button("OR_ProceGeoSil_FattenTriangle", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_fattentriangle);
 			if(ImGui::Button("OR_ImageBased", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_imagebased);
+			if(ImGui::Button("XToon_HighLight", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&xtoon_highlight);
+			if(ImGui::Button("XToon_BackLight", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&xtoon_backlight);
+			if(ImGui::Button("XToon_AerialPerspective", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&xtoon_aerialperspective);
+			if(ImGui::Button("NPRLines", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&nprlines);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
@@ -148,8 +159,7 @@ int main()
 	ListUI listui;
 	RenderLoop *rLoop;
 	while (!glfwWindowShouldClose(window))
-	{
-		
+	{	
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
