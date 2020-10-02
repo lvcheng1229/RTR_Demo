@@ -24,6 +24,20 @@
 #include"XToon_BackLight.h"
 #include"XToon_AerialPerspective.h"
 #include"Lines.h"
+#include"Hatch.h"
+
+//Image Space Effect
+#include"HDR.h"
+#include"Bloom_Blur.h"
+#include"Bloom_DownSample.h"
+#include"DOF_Metod1.h"
+#include"MotionBlur.h"
+
+//PBR
+#include"PBR.h"
+#include"PBR_TEX.h"
+#include"PBR_NDF.h"
+#include"PBR_G.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -59,11 +73,24 @@ public:
 	XToon_BackLight xtoon_backlight;
 	XToon_AerialPerspective xtoon_aerialperspective;
 	NPRLines nprlines;
+	Hatch hatch;
+
+	//Image Space Effect
+	Bloom_Blur bloom_blur;
+	Bloom_DownSample bloom_downsample;
+	DOF_Metod1 dof_metod1;
+	MotionBlur motionblur;
+
+	//PBR
+	PBR pbr;
+	PBR_TEX pbr_tex;
+	PBR_NDF pbr_ndf;
+	PBR_G pbr_g;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &nprlines;
+		rloop = &pbr_g;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -99,9 +126,9 @@ public:
 	
 			ImGui::EndChild();
 		}
-		if (ImGui::CollapsingHeader("NPR"))
+		if (ImGui::CollapsingHeader("NPR(9Demos)"))
 		{
-			ImGui::BeginChild("Child2", ImVec2(0, 260), true, ImGuiWindowFlags_MenuBar);
+			ImGui::BeginChild("Child2", ImVec2(0, 240), true, ImGuiWindowFlags_MenuBar);
 			ImGui::Columns(1);
 			if(ImGui::Button("OR_NormalEdge", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_normaledge);
 			if(ImGui::Button("OR_ProceGeoSil_Zbias_Shell", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&or_procegeosil_zbias_shell);
@@ -111,6 +138,27 @@ public:
 			if(ImGui::Button("XToon_BackLight", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&xtoon_backlight);
 			if(ImGui::Button("XToon_AerialPerspective", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&xtoon_aerialperspective);
 			if(ImGui::Button("NPRLines", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&nprlines);
+			if(ImGui::Button("Hatch", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&hatch);
+			ImGui::EndChild();
+		}
+		if (ImGui::CollapsingHeader("ImageSpaceEffect"))
+		{
+			ImGui::BeginChild("Child2", ImVec2(0, 240), true, ImGuiWindowFlags_MenuBar);
+			ImGui::Columns(1);
+			if(ImGui::Button("Bloom_Blur", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&bloom_blur);
+			if(ImGui::Button("Bloom_DownSample", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&bloom_downsample);
+			if(ImGui::Button("DOF_Metdod1", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&dof_metod1);
+			if(ImGui::Button("MotionBlur", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&motionblur);
+			ImGui::EndChild();
+		}
+		if (ImGui::CollapsingHeader("PBR"))
+		{
+			ImGui::BeginChild("Child2", ImVec2(0, 240), true, ImGuiWindowFlags_MenuBar);
+			ImGui::Columns(1);
+			if(ImGui::Button("PBR", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr);
+			if(ImGui::Button("PBR_TEX", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_tex);
+			if(ImGui::Button("PBR_NDF", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_ndf);
+			if(ImGui::Button("PBR_G", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_g);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
@@ -173,6 +221,7 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+	rLoop->exit();
 	glfwTerminate();
 	return 0;
 }

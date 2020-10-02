@@ -1,0 +1,14 @@
+#version 120 // -*- c++ -*-
+#include <compatibility.glsl>
+
+uniform sampler2D  sourceTexture;
+uniform vec4       g3d_sz2D_sourceTexture;
+uniform float      sensitivity;
+uniform ivec2      guardBandSize;
+uniform ivec2      outputSize;
+
+void main(void) {
+    vec3 src = texelFetch(sourceTexture, ivec2(gl_TexCoord[0].st * outputSize) + guardBandSize, 0).rgb * sensitivity;
+    float p  = max(max(src.r, src.g), src.b);
+    gl_FragColor.rgb = src * smoothstep(1.0, 2.0, p);
+}

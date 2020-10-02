@@ -1,0 +1,384 @@
+#version 120 or 150 or 420 // -*- c++ -*-
+#extension GL_ARB_shader_atomic_counters : enable
+#extension GL_ARB_shader_image_load_store : enable
+#extension GL_ARB_gpu_shader5 : enable
+#extension GL_ARB_separate_shader_objects : enable
+
+#include <compatibility.glsl>
+#include <UniversalMaterial/UniversalMaterial_uniforms.glsl>
+
+#expect USE_IMAGE_STORE "1 or 0"
+
+/** 
+  \file UniversalSurface_GBuffer.pix 
+  \author Morgan McGuire, http://graphics.cs.williams.edu
+    
+  This shader expects a prefix (GBuffer::macros() or SVO::macros()) to be attached
+  at runtime using Shader::setPremable.
+
+  If USE_IMAGE_STORE is defined and set to a non-zero value, then the OpenGL image store
+  API is used instead of framebuffer write.  In this case, you will probably want to
+  disable framebuffer writes (color mask) using RenderDevice::setColorWrite(false).
+
+  Requires BUFFER_WIDTH_MASK = width - 1 and BUFFER_WIDTH_SHFIT = log_2(width) to be
+  passed, where width is a power of 2.
+*/
+#if __VERSION__ >= 130
+#   define varying in
+#endif
+
+#expect USE_IMAGE_STORE "1 or 0"
+#expect HAS_ALPHA "1 or 0"
+
+#if (__VERSION__ < 420)// && ! defined(GL_ARB_separate_shader_objects)) 
+#   define layout(ignore)
+#endif
+
+/** Texture coordinate */
+varying layout(location=0) vec2 texCoord;
+
+varying layout(location=1) vec3 wsPosition;
+
+
+#if USE_IMAGE_STORE
+#   ifndef GL_ARB_shader_image_load_store
+#       error "Using the SVO shaders requires the GL_ARB_shader_image_load_store extension"
+#   endif
+
+#   ifdef LAMBERTIAN
+        uniform float2                          LAMBERTIAN_writeScaleBias;
+        uniform writeonly image2D               LAMBERTIAN_buffer;
+
+        // Declare the local variable (which is #defined to itself by SVO)
+        float3                                  LAMBERTIAN;
+#   endif
+
+#   ifdef SVO_POSITION
+        uniform float2                          SVO_POSITION_writeScaleBias;
+        uniform writeonly image2D               SVO_POSITION_buffer;
+        float3                                  SVO_POSITION;
+#   endif
+
+#   ifdef WS_POSITION
+        uniform float2                          WS_POSITION_writeScaleBias;
+        uniform writeonly image2D               WS_POSITION_buffer;
+        float3                                  WS_POSITION;
+#   endif
+
+#   if defined(GL_ARB_shader_atomic_counters) && 0
+        // Image atomic backed by a PBO
+        // Not currently implemented
+        uniform atomic_uint                     fragmentCounter;
+#   else
+        // Fall back to image atomics, which do not require GL_ARB_shader_atomic_counters
+        // but are not optimized for high numbers of collisions
+        layout(r32ui) uniform  uimageBuffer     fragmentCounter_buffer;
+#   endif
+#else
+    /** Do not read color attributes (except LAMBERTIAN, if an alpha test is required)
+        outside of this rectangle.  Used to implement the trim band outside of which
+        only depth is recorded. */
+    uniform vec2            lowerCoord, upperCoord;
+#endif
+
+#if defined(CS_POSITION_CHANGE) || defined(SS_POSITION_CHANGE)
+    varying layout(location=7) vec3 csPrevPosition;
+#endif
+
+#ifdef SS_POSITION_CHANGE
+    // We reproject per-pixel so that csPrevPosition can be interpolated
+    // linearly in the current frame's 3D; projecting the previous position
+    // in the vertex shader would result in a previous homogeneous value
+    // being linearly in the current time frame.
+    uniform mat4 ProjectToScreenMatrix;
+#endif
+
+float backside = (gl_FrontFacing == g3d_InvertY) ?  1.0 : -1.0;
+
+#ifdef NORMALBUMPMAP
+#   if (PARALLAXSTEPS > 0)
+        /** Un-normalized (interpolated) tangent space eye vector */
+        varying layout(location=6) vec3  _tsE;
+#   endif    
+    varying layout(location=4)   vec3    tan_X;
+    varying layout(location=5)   vec3    tan_Y;
+
+#include <BumpMap/BumpMap.glsl>
+#   if (PARALLAXSTEPS == 0)
+#       define bumpMap bumpMapBlinn78
+#   elif (PARALLAXSTEPS <= 1)
+#       define bumpMap bumpMapWelsh04
+#   else // PARALLAXSETPS > 1
+#       define bumpMap bumpMapTatarchuk06
+#   endif
+#endif
+
+varying layout(location=2) vec3             tan_Z;
+
+/** Index of refraction / 24.0 */
+uniform float            normalizedIndexOfRefraction;
+
+#ifdef SVO_POSITION
+    varying layout(location=8) vec3         svoPosition;
+	flat varying layout(location=9) int		triangleAxis;
+#endif
+
+void main() {
+#   if ! USE_IMAGE_STORE
+       // Check the colorrect bounds
+       if ((gl_FragCoord.x < lowerCoord.x) ||
+           (gl_FragCoord.y < lowerCoord.y) ||
+           (gl_FragCoord.x > upperCoord.x) ||
+           (gl_FragCoord.y > upperCoord.y)) {
+            // Outside of bounds
+
+#           if HAS_ALPHA
+                // Alpha test
+#               if defined(LAMBERTIANCONSTANT) || defined(LAMBERTIANMAP)
+                {
+                    // Don't bother with parallax--we're in a guard band
+                    float alpha = 
+#                   ifdef LAMBERTIANCONSTANT
+                       lambertianConstant.a
+#                      ifdef LAMBERTIANMAP
+                            * texture2D(lambertianMap, texCoord).a
+#                      endif
+#                   else
+                       texture2D(lambertianMap, texCoord).a
+#                   endif
+                    ;
+                    if (alpha < 0.5) {
+                        discard;
+                    }
+                }
+#               endif
+#           endif
+
+            // Don't bother looking up attributes, just let the depth write straight through
+            return;
+       }
+#   endif
+
+#   if defined(NORMALBUMPMAP)
+        float rawNormalLength = 1.0;
+        vec3 wsN;
+        vec2 offsetTexCoord;
+        vec3 tsN;
+#       if (PARALLAXSTEPS > 0)
+            bumpMap(normalBumpMap, bumpMapScale, bumpMapBias, texCoord, tan_X, tan_Y, tan_Z, backside, normalize(_tsE), wsN, offsetTexCoord, tsN, rawNormalLength);
+#       else
+            // Vanilla normal mapping
+            bumpMap(normalBumpMap, 0.0, 0.0, texCoord, tan_X, tan_Y, tan_Z, backside, vec3(0.0), wsN, offsetTexCoord, tsN, rawNormalLength);
+#       endif
+#   else
+        // World space normal
+        vec3 wsN = normalize(tan_Z.xyz * backside);
+        vec2 offsetTexCoord = texCoord;
+        // No bump maps, normal always Z-axis of tangent space
+        vec3 tsN = vec3(0.0,0.0,1.0);
+#   endif
+
+    //////////////////////// MATERIAL //////////////////////////////
+
+    float alpha;
+
+    // We have to always read alpha because there may be alpha testing
+#   if defined(LAMBERTIANCONSTANT) || defined(LAMBERTIANMAP)
+    {
+        vec4 temp = 
+#       ifdef LAMBERTIANCONSTANT
+            lambertianConstant
+#           ifdef LAMBERTIANMAP
+                * texture2D(lambertianMap, offsetTexCoord)
+#           endif
+#       else
+            texture2D(lambertianMap, offsetTexCoord)
+#       endif
+        ;
+#       ifdef LAMBERTIAN
+            LAMBERTIAN.rgb = temp.rgb;
+#       endif
+
+#       if HAS_ALPHA
+            alpha = temp.a;
+
+            if (alpha < 0.5) {
+                // Explict alpha test to discard; we can't rely on the hardware for it
+                // because the FBO specification doesn't say how it works.
+                discard;
+            }
+#       else
+            alpha = 1.0;
+#       endif
+    }
+#   else
+#       ifdef LAMBERTIAN
+            LAMBERTIAN.rgb = vec3(0.0);
+#       endif
+        alpha = 1.0;
+#   endif
+
+#   foreach (NAME, name, i, components) in (EMISSIVE, emissive, 3, rgb), (TRANSMISSIVE, transmissive, 3, rgb), (GLOSSY, glossy, 4, rgba)
+#       ifdef $(NAME)
+            $(NAME).$(components) =
+#           if defined($(NAME)CONSTANT) || defined($(NAME)MAP)     
+#               ifdef $(NAME)CONSTANT
+                    $(name)Constant
+#                   ifdef $(NAME)MAP
+                        * texture2D($(name)Map, offsetTexCoord).$(components)
+#                   endif
+#               else
+                    texture2D($(name)Map, offsetTexCoord).$(components)
+#               endif
+#           else
+                vec$(i)(0.0)
+#           endif
+            ;
+#       endif
+#   endforeach
+
+#   if defined(GLOSSY) && defined(NORMALBUMPMAP)
+        // normal variance -> glossy coefficient to resolve aliasing
+        if (GLOSSY.a < 1.0) {
+            GLOSSY.a = packGlossyExponent(computeToksvigGlossyExponent(unpackGlossyExponent(GLOSSY.a), rawNormalLength));
+        }
+#   endif
+
+    ///////////////////////// NORMALS //////////////////////////////
+#   ifdef CS_NORMAL
+        vec3 csN = (mat3(g3d_WorldToCameraMatrix) * wsN);
+#   endif
+
+#   if defined(WS_FACE_NORMAL) || defined(CS_FACE_NORMAL)
+        vec3 wsFaceNormal = normalize(cross(dFdy(wsPosition), dFdx(wsPosition)));
+#   endif
+
+#   ifdef CS_FACE_NORMAL
+        vec3 csFaceNormal = (g3d_WorldToCameraMatrix * vec4(wsFaceNormal, 0.0));
+#   endif
+
+#   foreach (NAME, name) in (WS_NORMAL, wsN), (CS_NORMAL, csN), (TS_NORMAL, tsN), (WS_FACE_NORMAL, wsFaceNormal), (WS_FACE_NORMAL, wsFaceNormal), (CS_FACE_NORMAL, csFaceNormal), (SVO_POSITION, svoPosition)
+#       ifdef $(NAME)
+            $(NAME).xyz = $(name) * $(NAME)_writeScaleBias.x + $(NAME)_writeScaleBias.y;
+#       endif
+#   endforeach
+
+    //////////////////////// POSITIONS /////////////////////////////
+    // NVIDIA drivers miscompile this unless we write WS_POSITION after the normals
+
+#   if defined(CS_POSITION) || defined(CS_POSITION_CHANGE) || defined(SS_POSITION_CHANGE) || defined(CS_Z)
+        vec3 csPosition = g3d_WorldToCameraMatrix * vec4(wsPosition, 1.0);
+#   endif
+
+#   ifdef CS_POSITION_CHANGE
+        vec3 csPositionChange = (csPosition - csPrevPosition);
+#   endif
+
+#   ifdef SS_POSITION_CHANGE
+        vec2 ssPositionChange;
+        {
+            vec4 temp = ProjectToScreenMatrix * vec4(csPrevPosition, 1.0);
+            vec2 ssPrevPosition = temp.xy / temp.w;
+
+            // gl_FragCoord.xy has already been rounded to a pixel center, so regenerate the true projected position.
+            // This is needed to generate correct velocity vectors in the presence of Projection::pixelOffset
+            vec4 temp2 = ProjectToScreenMatrix * vec4(csPosition, 1.0);
+            vec2 ssPosition = temp2.xy / temp2.w;
+            ssPositionChange = (ssPosition - ssPrevPosition);
+        }
+#   endif
+
+#   foreach (NAME, name, components) in (WS_POSITION, wsPosition, xyz), (CS_POSITION, csPosition, xyz), (CS_POSITION_CHANGE, csPositionChange, xyz), (SS_POSITION_CHANGE, ssPositionChange, xy)
+#       ifdef $(NAME)
+            $(NAME).$(components) = $(name) * $(NAME)_writeScaleBias.x + $(NAME)_writeScaleBias.y;
+#       endif
+#   endforeach
+
+#   ifdef CS_Z
+        CS_Z.r = csPosition.z * CS_Z_writeScaleBias.x + CS_Z_writeScaleBias.y;
+#   endif
+
+
+#   if USE_IMAGE_STORE
+    {
+
+# if 1	//Standard path
+
+        uint fragmentCount = uint(imageAtomicAdd(fragmentCounter_buffer, 0, uint(1)));
+        int2 outCoord = int2(int(fragmentCount & uint(BUFFER_WIDTH_MASK)), int(fragmentCount >> uint(BUFFER_WIDTH_SHIFT)));
+
+
+        // Write to the gbuffer using the image API
+#       ifdef LAMBERTIAN
+            imageStore(LAMBERTIAN_buffer, outCoord, float4(LAMBERTIAN, 0));
+#       endif
+
+#       ifdef WS_POSITION
+            imageStore(WS_POSITION_buffer, outCoord, float4(WS_POSITION, 0));
+#       endif
+
+#       ifdef SVO_POSITION
+			
+            imageStore(SVO_POSITION_buffer, outCoord, clamp(float4(SVO_POSITION, 0), vec4(0), vec4(1)));
+#       endif
+
+        // TODO: Repeat for all fields
+# else
+		//Experimental path
+
+		//float curResF=float(curRes);
+		//float eyeZ=(inPos.z+1.0f)*0.5f *curResF;
+		float eyeZ= (2.0 * gl_FragCoord.z - gl_DepthRange.near - gl_DepthRange.far) / (gl_DepthRange.far - gl_DepthRange.near);
+
+		vec2 eyeZDxDy= vec2(dFdx( eyeZ ), dFdy( eyeZ ))*0.5f;// *0.5f;
+
+		vec4 eyeZCorners=vec4( eyeZ-eyeZDxDy.x-eyeZDxDy.y, eyeZ +eyeZDxDy.x-eyeZDxDy.y, eyeZ -eyeZDxDy.x+eyeZDxDy.y, eyeZ +eyeZDxDy.x+eyeZDxDy.y);
+			
+		vec2 eyeZMinMax;
+		eyeZMinMax.x=min(min(min(eyeZCorners.x, eyeZCorners.y), eyeZCorners.z), eyeZCorners.w);
+		eyeZMinMax.y=max(max(max(eyeZCorners.x, eyeZCorners.y), eyeZCorners.z), eyeZCorners.w);
+		eyeZMinMax*=1.0f;
+
+		vec2 voxZMinMax=vec2(eyeZMinMax);
+		vec2 voxZOffset=(voxZMinMax-(eyeZ));
+		float offsetOffset=1.0f/2048.0f;//abs(voxZMinMax.y-voxZMinMax.x)/0.050f;
+
+		//for(float offset=voxZMinMax.x; offset<=voxZMinMax.y; offset+=offsetOffset)
+		for(int offset=-1; offset<=1; offset++)
+		{
+
+			vec3 voxCoordsLoc=SVO_POSITION;
+			if(triangleAxis==2){
+				voxCoordsLoc.x += float(offset)*offsetOffset;
+			}else if(triangleAxis==1){
+				voxCoordsLoc.y += float(offset)*offsetOffset;
+			}else{
+				voxCoordsLoc.z += float(offset)*offsetOffset;
+			}
+
+
+			uint fragmentCount = uint(imageAtomicAdd(fragmentCounter_buffer, 0, 1U ));
+			int2 outCoord = int2(int(fragmentCount & uint(BUFFER_WIDTH_MASK)), int(fragmentCount >> uint(BUFFER_WIDTH_SHIFT)));
+
+			// Write to the gbuffer using the image API
+#       ifdef LAMBERTIAN
+            imageStore(LAMBERTIAN_buffer, outCoord, float4(LAMBERTIAN, 0));
+#       endif
+
+#       ifdef WS_POSITION
+            imageStore(WS_POSITION_buffer, outCoord, float4(WS_POSITION, 0));
+#       endif
+
+#       ifdef SVO_POSITION
+			
+            imageStore(SVO_POSITION_buffer, outCoord, float4(voxCoordsLoc, 0));
+#       endif
+
+		}
+#endif
+
+    }
+#   endif
+
+}
+/* end of SS_GBuffer.pix */

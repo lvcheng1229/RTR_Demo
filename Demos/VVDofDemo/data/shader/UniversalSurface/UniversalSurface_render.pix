@@ -1,0 +1,285 @@
+#version 120 // -*- c++ -*-
+
+/**
+  \file UniversalSurface/UniversalSurface_render.pix
+  \author Morgan McGuire, http://graphics.cs.williams.edu
+
+  \created 2009-12-18
+  \edited  2013-08-18
+ */
+#extension GL_ARB_shader_texture_lod : require  // For textureCubeLod
+#extension GL_EXT_gpu_shader4 : require         // For texelFetch2D        
+#extension GL_ARB_texture_query_lod : enable    // For textureQueryLod
+#extension GL_EXT_gpu_shader4_1 : enable        // For textureQueryLod
+#extension GL_EXT_gpu_shader5 : enable          // For textureQueryLod
+#include <compatibility.glsl>
+#include <g3dmath.glsl>
+#include <LocalLightingEnvironment/LocalLightingEnvironment_uniforms.glsl>
+#include <UniversalMaterial/UniversalMaterial_uniforms.glsl>
+
+
+///** Set to -1 to flip the normal. */
+uniform float       backside;
+//float backside = (gl_FrontFacing ? 1.0 : -1.0);
+
+uniform float       radianceScale;
+
+#ifdef GL_EXT_gpu_shader4
+    uniform sampler2D   aoBuffer;
+    uniform ivec2       aoBufferOffset;
+#endif
+
+#if NUM_LIGHTMAP_DIRECTIONS > 0
+    varying vec2 lightMapCoord;
+#endif
+
+/** Surface position in world space */
+varying vec3        wsPosition;
+
+varying vec2        texCoord;
+varying vec3        tan_Z;
+
+#ifdef NORMALBUMPMAP
+#   if (PARALLAXSTEPS > 0)
+        /** Un-normalized (interpolated) tangent space eye vector */
+        varying vec3        _tsE;
+#   endif    
+    varying vec3        tan_X, tan_Y;
+#endif
+
+#for (int I = 0; I < NUM_LIGHTS; ++I)
+#    if castsShadows$(I)
+        /** Coordinate to use in the shadow map */
+        varying vec4    shadowCoord$(I);
+#   endif
+#endfor
+
+
+// These must appear after UniversalMaterial because they use macros
+// and after the definition of tan_Z and backside
+#include <Light/Light.glsl>
+#include <BumpMap/BumpMap.glsl>
+
+void main() {
+    
+    const vec3 BLACK = vec3(0.0, 0.0, 0.0);
+
+    vec3 wsEyePos = g3d_CameraToWorldMatrix[3].xyz;
+
+#   if defined(NORMALBUMPMAP)
+        float rawNormalLength = 1.0;
+        vec3 wsN;
+        vec2 offsetTexCoord;
+        vec3 tsN;
+#       if (PARALLAXSTEPS > 0)
+            bumpMap(normalBumpMap, bumpMapScale, bumpMapBias, texCoord, tan_X, tan_Y, tan_Z, backside, normalize(_tsE), wsN, offsetTexCoord, tsN, rawNormalLength);
+#       else
+            // Vanilla normal mapping
+            bumpMap(normalBumpMap, 0.0, 0.0, texCoord, tan_X, tan_Y, tan_Z, backside, vec3(0.0), wsN, offsetTexCoord, tsN, rawNormalLength);
+#       endif
+
+#   else
+        // World space normal
+        vec3 wsN = normalize(tan_Z.xyz * backside);
+        vec2 offsetTexCoord = texCoord;
+#   endif
+
+
+#   if HAS_LAMBERTIAN_TERM
+        // lambertianColor.rgb = Phong lambertian reflectivity, on the range 0/pi to 1/pi
+        // lambertianColor.a   = Partial coverage, on the range 0 to 1
+        vec4 lambertianColor =
+#       ifdef LAMBERTIANCONSTANT
+            lambertianConstant
+#           ifdef LAMBERTIANMAP
+                * texture2D(lambertianMap, offsetTexCoord)
+#           endif
+#       else
+            texture2D(lambertianMap, offsetTexCoord)
+#       endif
+        ;
+	  lambertianColor.rgb *= invPi;
+
+#   endif
+      
+#   if HAS_GLOSSY_TERM
+        // Eye vector
+        vec3 wsE = normalize(wsEyePos - wsPosition);
+        // or... (tangentToWorld * vec4(tsE, 0.0)).xyz;
+#   else
+        vec3 wsE = BLACK;
+#   endif
+
+    vec3 E_ambient = vec3(0.0);
+    
+#   if NUM_LIGHTMAP_DIRECTIONS == 0
+
+        // Use environment light for lambertian's indirect term
+#       for (int i = 0; i < NUM_ENVIRONMENT_MAPS; ++i)
+        {
+            // Sample the highest MIP-level to approximate Lambertian integration over the hemisphere
+            const float MAXMIP = 20;
+            E_ambient += textureCubeLod(environmentMap$(i), wsN, MAXMIP).rgb * environmentMapScale$(i);
+        }
+#       endfor
+
+#   elif NUM_LIGHTMAP_DIRECTIONS == 1
+
+        // Use lightmap for lambertian
+        E_ambient += texture2D(lightMap0, lightMapCoord).rgb * (lightMapConstant * lightMapRadianceScale);
+
+#   elif NUM_LIGHTMAP_DIRECTIONS == 2
+
+#       error Illegal number of lightmap directions
+
+#   elif NUM_LIGHTMAP_DIRECTIONS == 3
+
+#       if defined(NORMALBUMPMAP)
+            E_ambient += radiosityNormalMap(lightMap0, lightMap1, lightMap2, lightMapCoord, tsN) * (lightMapConstant * lightMapRadianceScale);
+#       else
+            // If there's no normal map, then the lightmap axes will all be at the same angle to this surfel,
+            // so there's no need to compute dot products: just average
+            E_ambient += (texture2D(lightMap0, lightMapCoord).rgb + texture2D(lightMap1, lightMapCoord).rgb + texture2D(lightMap2, lightMapCoord).rgb) * (lightMapRadianceScale * lightMapConstant * (1.0 / 3.0));
+#       endif
+#   endif
+
+    vec3 E_glossy = BLACK, E_glossyAmbient = BLACK;
+    float glossyExponent = 1, glossyCoefficient = 0;
+
+#   if defined(EMISSIVECONSTANT) || defined(EMISSIVEMAP)     
+        vec3 emissiveColor =
+#       ifdef EMISSIVECONSTANT
+            emissiveConstant
+#           ifdef EMISSIVEMAP
+                * texture2D(emissiveMap, offsetTexCoord).rgb
+#           endif
+#       else
+            texture2D(emissiveMap, offsetTexCoord).rgb
+#       endif
+        ;
+#   endif
+
+#   if defined(GLOSSYCONSTANT) || defined(GLOSSYMAP)
+        vec3 F0;
+        vec3 glossyColor;
+        float cos_o = dot(wsN, wsE);
+        
+        // If 1.0, mirror glossy reflect
+        // If 0.0, no glossy
+        // Otherwise exponent = glossyExponent * 127 + 1. 
+        {        
+            vec4 temp =
+#               ifdef GLOSSYCONSTANT
+                    glossyConstant
+#                   ifdef GLOSSYMAP
+                        * texture2D(glossyMap, offsetTexCoord)
+#                   endif
+#               else
+                    texture2D(glossyMap, offsetTexCoord)
+#               endif
+                ;
+                   
+            F0 = temp.rgb;
+            glossyColor = computeF(F0, max(0.0, cos_o));
+
+            // Unpack the glossy exponent
+            glossyExponent = unpackGlossyExponent(temp.a);
+
+#           if defined(NORMALBUMPMAP)
+                glossyExponent = computeToksvigGlossyExponent(glossyExponent, rawNormalLength);
+#           endif
+
+            glossyCoefficient = (glossyExponent + 8.0) * (1.0 / 8.0);
+
+            // Reflection vector
+            vec3 wsR = normalize(wsN * (2.0 * cos_o) - wsE);
+
+            // We compute MIP levels based on the glossy exponent for non-mirror surfaces
+            float MIPshift = (temp.a == 1.0) ? 0.0 : - 0.5 * log2(glossyExponent + 1);
+
+#           for (int i = 0; i < NUM_ENVIRONMENT_MAPS; ++i)
+            {
+                float MIPlevel = (temp.a == 1.0) ? 0.0 : (environmentMapGlossyMIPConstant$(i) + MIPshift);
+#               if defined(GL_ARB_texture_query_lod) || defined(GL_EXT_gpu_shader4_1) || defined(GL_EXT_gpu_shader5) || (__VERSION__ >= 400)
+                    // Shift by the actual LOD that we would normally use for such a reflection vector to avoid aliasing
+//                    MIPlevel += textureQueryLod(environmentMap$(i), wsR).x;
+#               endif
+                E_glossyAmbient += textureCubeLod(environmentMap$(i), wsR, MIPlevel).rgb * environmentMapScale$(i);
+            }
+#           endfor
+       }
+
+#      if defined(LAMBERTIANCONSTANT) || defined(LAMBERTIANMAP)
+          // Modulate the lambertian color by the glossy; this
+          // ensures energy conservation at glancing angles under
+          // Fresnel effects.
+          lambertianColor.rgb *= float3(1.0) - glossyColor;
+#      endif
+        glossyColor *= invPi;
+#   else
+       glossyExponent = 0.0;
+#   endif
+       
+
+    vec3 ignore;
+
+    vec3 E_lambertian = vec3(0.0);
+
+#   for (int I = 0; I < NUM_LIGHTS; ++I)
+    {
+#       if castsShadows$(I)
+            addShadowedLightContribution(wsN, wsE, wsPosition, glossyExponent, glossyCoefficient, 
+                lightPosition$(I), lightAttenuation$(I), lightDirection$(I), lightUpVector$(I), lightRightVector$(I), lightRectangular$(I), lightColor$(I), 
+                shadowCoord$(I), shadowMap$(I), shadowMapInvSize$(I), E_lambertian, E_glossy, ignore);
+#       else
+            addLightContribution(wsN, wsE, wsPosition, glossyExponent, glossyCoefficient, 
+                lightPosition$(I), lightAttenuation$(I), lightDirection$(I), lightUpVector$(I), lightRightVector$(I), lightRectangular$(I), lightColor$(I), 
+                E_lambertian, E_glossy, ignore);
+#      endif
+    }
+#   endfor
+   
+    float AO = 
+#       ifdef GL_EXT_gpu_shader4
+            // The clamp is for the case where the aoBuffer is a small, all-white buffer
+            (0.85 * texelFetch(aoBuffer, min(ivec2(gl_FragCoord.xy) + aoBufferOffset, textureSize(aoBuffer, 0) - ivec2(1, 1)), 0).r + 0.15);
+#       else
+            1.0;
+#       endif
+
+    // How much ambient occlusion to apply to direct illumination (sort of approximates area lights,
+    // more importantly: NPR term that adds local contrast)
+    float directAO = 0.5 + AO + 0.5;
+
+    gl_FragColor.rgb =
+#       if defined(EMISSIVECONSTANT) || defined(EMISSIVEMAP)
+            emissiveColor * emissiveRadianceScale +
+#       endif      
+        (BLACK
+#       if defined(LAMBERTIANCONSTANT) || defined(LAMBERTIANMAP)
+           + (E_lambertian * directAO + E_ambient * AO) * lambertianColor.rgb
+#       endif
+
+#       if defined(GLOSSYCONSTANT) || defined(GLOSSYMAP)
+           + (E_glossy * glossyCoefficient * directAO + E_glossyAmbient * AO) * glossyColor.rgb
+#       endif
+         );
+
+    gl_FragColor.rgb *= radianceScale;
+
+    // Show bump map
+//#   if defined(NORMALBUMPMAP)
+//        gl_FragColor.rgb = texture2D(normalBumpMap, texCoord).aaa;
+//#   endif
+
+    gl_FragColor.a = 
+#       if defined(LAMBERTIANMAP) || defined(LAMBERTIANCONSTANT)
+            lambertianColor.a
+#       else
+            1.0
+#       endif
+        ;
+
+}
+
+

@@ -32,7 +32,7 @@ public:
 	vector<unsigned int> indices;
 	vector<Texture> textures;
 	unsigned int VAO;
-
+	
 	/*  Functions  */
 	// constructor
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
@@ -40,7 +40,7 @@ public:
 		this->vertices = vertices;
 		this->indices = indices;
 		this->textures = textures;
-
+		
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		setupMesh();
 	}
@@ -53,6 +53,7 @@ public:
 		unsigned int specularNr = 1;
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
+
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding

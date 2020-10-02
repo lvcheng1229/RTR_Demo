@@ -1,0 +1,70 @@
+// -*- c++ -*-
+// You can extend this sample scene file format with your own fields.
+// Edit the scene parsing in Scene.cpp.
+{
+    name = "Minecraft",
+   
+    models = {
+		m0 = ArticulatedModel::Specification {
+			filename = "model/vokselia_spawn/vokselia_spawn.zip/vokselia_spawn.obj";
+			scale = 100.0;
+		};
+    };
+
+    localLightingEnvironment = 
+        LocalLightingEnvironment {
+            environmentMap = {
+                constant = 1.0;
+                texture = "cubemap/noonclouds/noonclouds_*.png";
+            };
+        };
+    
+    entities = {
+        // Each entity has a name and is an instance of a model.  The instantiation syntax accepts
+        // two (optional) arguments: a position spline (which can be a single position), and a 
+        // pose spline (which can be a single pose).
+        
+        e0 = VisibleEntity {
+            model    = "m0";
+            frame    = Point3(0.0, 0.0, 0.0);
+        };        
+
+        sun = Light {
+            type = "DIRECTIONAL";
+            frame = CFrame::fromXYZYPRDegrees(inf, inf, inf, 195, -70, 15);
+            biradiance = Biradiance3(10);
+            shadowMapSize = Vector2int16(2048, 2048);
+        };
+
+        fillLight = Light {
+            type = "DIRECTIONAL";
+            frame = CFrame::fromXYZYPRDegrees(inf, inf, inf, 15, 85, 15);             
+            biradiance = Biradiance3::fromARGB(0x1e324d);
+            castsShadows = false;
+        };
+        
+    camera = Camera {
+        frame = CFrame::fromXYZYPRDegrees(-42.2315, 11.557, 32.5756, -44.118, -3.28114 )  ;
+        
+            depthOfFieldSettings = DepthOfFieldSettings { 
+                enabled = true; 
+                model = "ARTIST"; 
+
+				farBlurRadiusFraction = 0.00630;
+				farBlurryPlaneZ  = -120;
+				farSharpPlaneZ  =  -30;
+				nearSharpPlaneZ =  -8.0;
+				nearBlurryPlaneZ =  -0.5;
+				nearBlurRadiusFraction = 0.00580;
+		        }; 
+
+            projection = Projection { 
+                farPlaneZ = -500; 
+                fovDegrees = 60; 
+                fovDirection = "VERTICAL"; 
+                nearPlaneZ = -0.2; 
+                pixelOffset = Vector2(0, 0 ); 
+            }; 
+	    };
+	};
+}

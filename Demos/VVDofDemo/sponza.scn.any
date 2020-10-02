@@ -1,0 +1,135 @@
+
+/* -*- c++ -*- */
+{ 
+    entities = { 
+        building = 
+        /* Each entity has a name and is an instance of a model.  The instantiation syntax accepts
+        two (optional) arguments: a position spline (which can be a single position), and a
+        pose spline (which can be a single pose). */
+        VisibleEntity { 
+            model = "buildingModel"; 
+            visible = true; 
+        }; 
+        
+        camera = 
+        Camera { 
+            depthOfFieldSettings = DepthOfFieldSettings { 
+                enabled = true; 
+                farBlurRadiusFraction = 0.0161538; 
+                farBlurryPlaneZ = -20.6793; 
+                farSharpPlaneZ = -7.98675; 
+                focusPlaneZ = -10; 
+                lensRadius = 0.01; 
+                model = "ARTIST"; 
+                nearBlurRadiusFraction = 0.0183516; 
+                nearBlurryPlaneZ = -2.29459; 
+                nearSharpPlaneZ = -4.94382; 
+            }; 
+            
+            filmSettings = FilmSettings { 
+                antialiasingEnabled = true; 
+                antialiasingFilterRadius = 0; 
+                bloomRadiusFraction = 0.009; 
+                bloomStrength = 0.2; 
+                debugZoom = 1; 
+                gamma = 2.2; 
+                sensitivity = 1; 
+                toneCurve = Spline { 
+                    control = ( 0, 0.1, 0.2, 0.5, 1 ); 
+                    extrapolationMode = "LINEAR"; 
+                    finalInterval = -1; 
+                    interpolationMode = "CUBIC"; 
+                    time = ( 0, 0.1, 0.2, 0.5, 1 ); 
+                }; 
+                
+                vignetteBottomStrength = 0.05; 
+                vignetteSizeFraction = 0.17; 
+                vignetteTopStrength = 0.5; 
+            }; 
+            
+            frame = CFrame::fromXYZYPRDegrees(-10, 1.7, -2.4, -112, 19 ); 
+            motionBlurSettings = MotionBlurSettings { 
+                cameraMotionInfluence = 0.5; 
+                enabled = false; 
+                exposureFraction = 0.75; 
+                maxBlurDiameterFraction = 0.1; 
+                numSamples = 15; 
+            }; 
+            
+            projection = Projection { 
+                farPlaneZ = -150; 
+                fovDegrees = 60; 
+                fovDirection = "VERTICAL"; 
+                nearPlaneZ = -0.1; 
+                pixelOffset = Vector2(0, 0 ); 
+            }; 
+            
+            visualizationScale = 1; 
+        }; 
+        
+        skybox = Skybox { 
+            constant = 1; 
+            texture = "cubemap/noonclouds/noonclouds_*.png"; 
+        }; 
+        
+        sun = Light { 
+            attenuation = ( 0, 0, 1 ); 
+            bulbPower = Power3(4e+006 ); 
+            castsShadows = true; 
+            enabled = true; 
+            frame = CFrame::fromXYZYPRDegrees(-15.5767, 207.755, -41.952, -164.03, -76.7166, 76.514 ); 
+            nearPlaneZLimit = -170; 
+            producesDirectIllumination = true; 
+            producesIndirectIllumination = true; 
+            shadowMapSize = Vector2int16(2048, 2048 ); 
+            spotHalfAngleDegrees = 5; 
+            spotSquare = true; 
+            type = "SPOT"; 
+        }; 
+        
+    }; 
+    
+    localLightingEnvironment = LocalLightingEnvironment { 
+        ambientOcclusionSettings = AmbientOcclusionSettings { 
+            bias = 0.1; 
+            blurRadius = 4; 
+            blurStepSize = 2; 
+            depthPeelSeparationHint = 0.001; 
+            edgeSharpness = 1; 
+            enabled = true; 
+            intensity = 2; 
+            monotonicallyDecreasingBilateralWeights = false; 
+            numSamples = 11; 
+            radius = 1; 
+            useDepthPeelBuffer = false; 
+            useNormalBuffer = false; 
+            useNormalsInBlur = false; 
+        }; 
+        
+        emissiveRadianceScale = 1; 
+        environmentMap = { 
+            constant = 0.6; 
+            texture = Texture::Specification { 
+                desiredFormat = "sRGB"; 
+                filename = "cubemap/uffizi/uffizi*.jpg"; 
+            }; 
+            
+        }; 
+        
+        lightMapRadianceScale = 1; 
+        radianceScale = 1; 
+    }; 
+    
+    models = { 
+        buildingModel = ArticulatedModel::Specification { 
+            filename = "model/crytek_sponza/sponza.zip/sponza.obj"; 
+            scale = 
+            /* stripMaterials = true; */
+            0.011; 
+            
+        }; 
+        
+    }; 
+    
+    name = "Sponza"; 
+} 

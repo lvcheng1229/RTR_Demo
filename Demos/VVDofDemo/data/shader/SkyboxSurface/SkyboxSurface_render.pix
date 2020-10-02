@@ -1,0 +1,24 @@
+#version 120
+varying vec3 direction;
+uniform float alpha;
+
+#if HAS_CUBEMAP0
+    uniform samplerCube texture0;
+    uniform float       constant0;
+#endif
+#if HAS_CUBEMAP1
+    uniform samplerCube texture1;
+    uniform float       constant1;
+#endif
+    uniform float       gammaAdjust;
+
+void main() {
+    gl_FragColor.a   = 1.0;
+    gl_FragColor.rgb = vec3(0.0);
+#   if HAS_CUBEMAP0
+        gl_FragColor.rgb += pow(textureCube(texture0, direction).rgb, vec3(gammaAdjust)) * (constant0 * (1.0 - alpha));
+#   endif
+#   if HAS_CUBEMAP1
+        gl_FragColor.rgb += pow(textureCube(texture1, direction).rgb, vec3(gammaAdjust)) * (constant1 * alpha);
+#   endif
+}

@@ -27,5 +27,5 @@ float  spec = pow(max(dot(norm, halfwayDir), 0.0), 64.0);
 
 vec3 result = lightcolor * vec3(ambient + diffuse + spec);
 FragColor = vec4(result, 1.0)*texture(sampleTexture,texCoords);
-//FragColor = vec4(result, 1.0)*vec4(1.0,1.0,0.0,1.0);
+//FragColor = vec4(result, 1.0)*vec4(1.0,1.0,1.0,1.0);
 }

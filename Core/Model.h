@@ -29,19 +29,28 @@ public:
 	vector<Mesh> meshes;
 	string directory;
 	bool gammaCorrection;
-
+	bool noTex;
 	/*  Functions   */
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
 	{
 		loadModel(path);
+		noTex = false;
 	}
 
 	// draws the model, and thus all its meshes
 	void Draw(Shader shader)
 	{
-		for(unsigned int i = 0; i < meshes.size(); i++)
+
+		for (unsigned int i = 0; i < meshes.size(); i++)
+		{
+			if (noTex == true)
+			{
+				meshes[i].textures.clear();
+			}
 			meshes[i].Draw(shader);
+		}
+			
 	}
 	void exit()
 	{

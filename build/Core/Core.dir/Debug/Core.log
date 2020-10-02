@@ -10,7 +10,12 @@ f:\rtr_demo\core\UltSetting.h(56): warning C4244: “初始化”: 从“double�
 f:\rtr_demo\core\UltSetting.h(57): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\UltSetting.h(59): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
 f:\rtr_demo\core\UltSetting.h(60): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-f:\rtr_demo\core\Mesh.h(79): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+f:\rtr_demo\core\Mesh.h(80): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+f:\rtr_demo\core\ModelDemo/ModelDemo.h(54): warning C4305: “参数”: 从“double”到“const T”截断
+          with
+          [
+              T=float
+          ]
 f:\rtr_demo\core\NPRTest.h(53): warning C4305: “参数”: 从“double”到“GLfloat”截断
 f:\rtr_demo\core\ShadowMap.h(35): warning C4305: “=”: 从“double”到“float”截断
 f:\rtr_demo\core\CSM.h(46): warning C4018: “<=”: 有符号/无符号不匹配
@@ -51,6 +56,16 @@ f:\rtr_demo\core\OutlineRendering_ImageBased.h(104): warning C4305: “参数”
 f:\rtr_demo\core\XToon_HighLight.h(63): warning C4305: “参数”: 从“double”到“GLfloat”截断
 f:\rtr_demo\core\XToon_BackLight.h(63): warning C4305: “参数”: 从“double”到“GLfloat”截断
 f:\rtr_demo\core\XToon_AerialPerspective.h(66): warning C4305: “参数”: 从“double”到“GLfloat”截断
-f:\rtr_demo\core\Lines.h(84): warning C4305: “参数”: 从“double”到“GLfloat”截断
-F:\RTR_Demo\Core\main.cpp(163): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\Lines.h(101): warning C4305: “参数”: 从“double”到“GLfloat”截断
+f:\rtr_demo\core\Hatch.h(22): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\Hatch.h(70): warning C4305: “参数”: 从“double”到“GLfloat”截断
+f:\rtr_demo\core\Bloom_DownSample.h(121): warning C4018: “<”: 有符号/无符号不匹配
+f:\rtr_demo\core\Bloom_DownSample.h(202): warning C4018: “<”: 有符号/无符号不匹配
+f:\rtr_demo\core\MotionBlur.h(210): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\PBR_NDF.h(19): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\PBR_NDF.h(20): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\PBR_NDF.h(46): warning C4305: “参数”: 从“double”到“GLfloat”截断
+f:\rtr_demo\core\PBR_G.h(20): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\PBR_G.h(46): warning C4305: “参数”: 从“double”到“GLfloat”截断
+F:\RTR_Demo\Core\main.cpp(211): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   Core.vcxproj -> F:\RTR_Demo\build\Core\Debug\Core.exe

@@ -18,7 +18,7 @@ public:
 	{
 		commonShader =new Shader("../../Core/PublicResource/commonshader.vs", "../../Core/PublicResource/commonshader.fs");
 
-		mymodel =new  Model("../../Core/PublicResource/nanosuit/nanosuit.obj");
+		mymodel =new  Model("../../Core/PublicResource/crytek_sponza/sponza.obj");
 		commonShader->use();
 		commonShader->setInt("sampleTexture", 0);
 
@@ -49,8 +49,10 @@ public:
 		commonShader->setVec3("lightPos", lightPos);
 		commonShader->setVec3("viewPos", camera.Position);
 
-		model = glm::translate(model, glm::vec3(0.0f, -5.0f, -10.0f));
-
+		model = glm::translate(model, glm::vec3(0.0f, -30.0f, -20.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(0.03));
+		
 		commonShader->setMat4("model", model);
 
 		mymodel->Draw(*commonShader);

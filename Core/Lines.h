@@ -9,11 +9,10 @@ public:
 	NPRLines() {
 		initDemo();
 	};
-	Shader *NoTexShader;
+	Shader *LineShader;
 
 	RenderedCube *renderCube;
 	RenderedSphere *renderSphere;
-
 	Model *bunny;
 
 	glm::vec3 lightPos;
@@ -32,18 +31,11 @@ public:
 		}
 	}
 
-	void SettingBeforLoop()
-	{			
-		NoTexShader = new Shader("../../Core/Lines/noTexShader.vert", "../../Core/Lines/noTexShader.frag","../../Core/Lines/noTexShader.geom");
-
-		bunny = new Model("../../Core/PublicResource/bunny.obj");
-	
-		glGenTextures(1, &LineTex);
-		glBindTexture(GL_TEXTURE_1D, LineTex);
-
+	void LoadTexForLevel(int level, const char *path)
+	{
 		int width, height, nrChannels;
 		stbi_set_flip_vertically_on_load(true);
-		unsigned char *data = stbi_load("../../Core/Lines/edgeTex.png", &width, &height, &nrChannels, 0);
+		unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
 		if (data)
 		{
 			GLint format;
@@ -53,11 +45,9 @@ public:
 				format = GL_RGB;
 			if (nrChannels == 4)
 				format = GL_RGBA;
-			glTexImage1D(GL_TEXTURE_1D, 0, format, width, 0, format,GL_UNSIGNED_BYTE, data);
+			glTexImage1D(GL_TEXTURE_1D, level, format, width, 0, format,GL_UNSIGNED_BYTE, data);
 
 			glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 			stbi_image_free(data);
 		}
@@ -66,15 +56,42 @@ public:
 			cout << "failed to loat texture:../../Core/Lines/edgeTex.png" << endl;
 			stbi_image_free(data);
 		}
+	}
 
+	void SettingBeforLoop()
+	{			
+		//Paper:Fast and versatile texture-based wireframe rendering
+		
+		LineShader = new Shader("../../Core/Lines/noTexShader.vert", "../../Core/Lines/noTexShader.frag","../../Core/Lines/noTexShader.geom");
+		bunny = new Model("../../Core/PublicResource/bunny.obj");
+	
+		glGenTextures(1, &LineTex);
+		glBindTexture(GL_TEXTURE_1D, LineTex);
+
+		//一个常见的错误是，将放大过滤的选项设置为多级渐远纹理过滤选项之一。
+		//这样没有任何效果，因为多级渐远纹理主要是使用在纹理被缩小的情况下的：
+		//纹理放大不会使用多级渐远纹理，为放大过滤设置多级渐远纹理的选项会产生一个
+
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAX_LEVEL, 2);
+
+		LoadTexForLevel(0, "../../Core/Lines/edgeLine0.png");
+		LoadTexForLevel(1, "../../Core/Lines/edgeLine1.png");
+		LoadTexForLevel(2, "../../Core/Lines/edgeLine2.png");
+	
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);	
 
 		renderCube = new RenderedCube();
 		renderSphere = new RenderedSphere();
 
-		NoTexShader->use();
-		NoTexShader->setInt("lineTex", 0);
+		LineShader->use();
+		LineShader->setInt("lineTex", 0);
 	}
 
 	void update()
@@ -86,18 +103,18 @@ public:
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 
-		NoTexShader->use();
-		NoTexShader->setMat4("projection", projection);
-		NoTexShader->setMat4("view", view);
-		NoTexShader->setVec3("viewPos", camera.Position);
-		NoTexShader->setVec3("lightPos", lightPos);
-		NoTexShader->setVec3("lightcolor", glm::vec3(1, 1, 1));
-		NoTexShader->setVec3("objColor", glm::vec3(0.8, 0.8, 0.2));
+		LineShader->use();
+		LineShader->setMat4("projection", projection);
+		LineShader->setMat4("view", view);
+		LineShader->setVec3("viewPos", camera.Position);
+		LineShader->setVec3("lightPos", lightPos);
+		LineShader->setVec3("lightcolor", glm::vec3(1, 1, 1));
+		LineShader->setVec3("objColor", glm::vec3(0.8, 0.8, 0.2));
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_1D, LineTex);
 
-		renderScene(NoTexShader);
+		renderScene(LineShader);
 	}
 	void renderScene(Shader *shader)
 	{		
@@ -130,9 +147,15 @@ public:
 
 		renderCube->exit();
 		renderSphere->exit();
+		bunny->exit();
+
+		LineShader->exit();
 
 		delete renderCube;
 		delete renderSphere;
+		delete bunny;
+
+		delete LineShader;
 	}
 
 	void DrawUI()
@@ -141,10 +164,7 @@ public:
 		ImGui::Begin("NPRLines", &show_window, ImGuiWindowFlags_MenuBar);
 		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
 
-		for (int i = 0; i < 3; i++)
-		{
-			lightPos[i] = LPos[i];
-		}
+		for (int i = 0; i < 3; i++)lightPos[i] = LPos[i];
 
 		ImGui::End();
 	}
