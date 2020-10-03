@@ -88,6 +88,7 @@ public:
 		ImGui::Checkbox("ShowDiffuse", &showDiffuse);
 		ImGui::SliderFloat("alpha", &alpha, 0, 1);
 		ImGui::SliderFloat("alpha(For Anisotropic G)", &alphay, 0, 1);
+		ImGui::Text("notice that in this demo,Vis=frac(G,(4*NoL*Nov)),so G=vis*(4*NoL*Nov)\ntype1:Implicit\ntype2:Neumann[1999]\ntype3:Kelemen[2001]\ntype4:Schlick GGX[1994][important]\ntype5:Smith used in Disney[2007]\n\ntype 6 7 8 9 10 are based on Paper Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs\n\ntype6:SmithJointApprox used in UE\ntype7:SmithJointCorrelated height_correlated_Smith_G2 used in Google Filament and Frostbite\ntype8:GGX-Smith Correlated Joint Approximate used in Unity HDRP\ntype9:Respawn Entertainment\ntype10:mithJointAniso");
 		ImGui::SliderInt("type", &type,1,10);	
 		ImGui::SliderFloat3("LightPos", LPos, -5.0, 5.0);
 		for (int i = 0; i < 3; i++)

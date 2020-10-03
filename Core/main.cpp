@@ -38,6 +38,7 @@
 #include"PBR_TEX.h"
 #include"PBR_NDF.h"
 #include"PBR_G.h"
+#include"PBR_Diffuse.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -86,11 +87,12 @@ public:
 	PBR_TEX pbr_tex;
 	PBR_NDF pbr_ndf;
 	PBR_G pbr_g;
+	PBR_Diffuse pbr_diffuse;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &pbr_g;
+		rloop = &pbr_diffuse;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -159,6 +161,7 @@ public:
 			if(ImGui::Button("PBR_TEX", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_tex);
 			if(ImGui::Button("PBR_NDF", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_ndf);
 			if(ImGui::Button("PBR_G", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_g);
+			if(ImGui::Button("PBR_Diffuse", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_diffuse);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

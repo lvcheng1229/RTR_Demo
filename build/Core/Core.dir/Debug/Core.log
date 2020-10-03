@@ -67,5 +67,7 @@ f:\rtr_demo\core\PBR_NDF.h(20): warning C4305: “初始化”: 从“double”�
 f:\rtr_demo\core\PBR_NDF.h(46): warning C4305: “参数”: 从“double”到“GLfloat”截断
 f:\rtr_demo\core\PBR_G.h(20): warning C4305: “初始化”: 从“double”到“float”截断
 f:\rtr_demo\core\PBR_G.h(46): warning C4305: “参数”: 从“double”到“GLfloat”截断
-F:\RTR_Demo\Core\main.cpp(211): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\PBR_Diffuse.h(18): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\PBR_Diffuse.h(45): warning C4305: “参数”: 从“double”到“GLfloat”截断
+F:\RTR_Demo\Core\main.cpp(214): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   Core.vcxproj -> F:\RTR_Demo\build\Core\Debug\Core.exe
