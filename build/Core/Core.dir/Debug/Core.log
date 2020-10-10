@@ -69,5 +69,16 @@ f:\rtr_demo\core\PBR_G.h(20): warning C4305: “初始化”: 从“double”到
 f:\rtr_demo\core\PBR_G.h(46): warning C4305: “参数”: 从“double”到“GLfloat”截断
 f:\rtr_demo\core\PBR_Diffuse.h(18): warning C4305: “初始化”: 从“double”到“float”截断
 f:\rtr_demo\core\PBR_Diffuse.h(45): warning C4305: “参数”: 从“double”到“GLfloat”截断
-F:\RTR_Demo\Core\main.cpp(214): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\IBL_Specular.h(229): warning C4244: “初始化”: 从“double”转换到“unsigned int”，可能丢失数据
+f:\rtr_demo\core\IBL_Specular.h(230): warning C4244: “初始化”: 从“double”转换到“unsigned int”，可能丢失数据
+f:\rtr_demo\core\SSAO.h(141): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SSAO.h(253): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\SSAO.h(254): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\SSAOHB.h(36): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\SSAOHB.h(167): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SSAOHB.h(243): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SSAOHB.h(250): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SSAOHB.h(285): warning C4305: “初始化”: 从“double”到“float”截断
+f:\rtr_demo\core\SSAOHB.h(286): warning C4305: “初始化”: 从“double”到“float”截断
+F:\RTR_Demo\Core\main.cpp(236): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   Core.vcxproj -> F:\RTR_Demo\build\Core\Debug\Core.exe

@@ -3,7 +3,7 @@
 #include"ModelDemo/ModelDemo.h"
 #include"NPRTest.h"
 
-//Shadow
+//Shadow 10
 #include"ShadowMap.h"
 #include"CSM.h"
 #include"PCF.h"
@@ -15,7 +15,7 @@
 #include"ShadowVolume.h"
 #include"ProjectionShadow.h"
 
-//NPR
+//NPR 9
 #include"OutlineRendering_NormalEdge.h"
 #include"OutlineRendering_ProceGeoSil_Zbias_Shell.h"
 #include"OutlineRendering_ProceGeoSil_FattenTriangle.h"
@@ -26,19 +26,25 @@
 #include"Lines.h"
 #include"Hatch.h"
 
-//Image Space Effect
+//Image Space Effect 5
 #include"HDR.h"
 #include"Bloom_Blur.h"
 #include"Bloom_DownSample.h"
 #include"DOF_Metod1.h"
 #include"MotionBlur.h"
 
-//PBR
+//PBR 5
 #include"PBR.h"
 #include"PBR_TEX.h"
 #include"PBR_NDF.h"
 #include"PBR_G.h"
 #include"PBR_Diffuse.h"
+
+//Local Ilumination
+#include"IBL_Diffuse.h"
+#include"IBL_Specular.h"
+#include"SSAO.h"
+#include"SSAOHB.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -89,10 +95,16 @@ public:
 	PBR_G pbr_g;
 	PBR_Diffuse pbr_diffuse;
 
+	//Local Ilumination
+	IBL_Diffuse ibl_diffuse;
+	IBL_Specular ibl_specular;
+	SSAO ssao;
+	SSAOHB ssaohb;
+
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &pbr_diffuse;
+		rloop = &ssaohb;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -155,13 +167,23 @@ public:
 		}
 		if (ImGui::CollapsingHeader("PBR"))
 		{
-			ImGui::BeginChild("Child2", ImVec2(0, 240), true, ImGuiWindowFlags_MenuBar);
+			ImGui::BeginChild("Child2", ImVec2(0, 160), true, ImGuiWindowFlags_MenuBar);
 			ImGui::Columns(1);
 			if(ImGui::Button("PBR", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr);
 			if(ImGui::Button("PBR_TEX", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_tex);
 			if(ImGui::Button("PBR_NDF", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_ndf);
 			if(ImGui::Button("PBR_G", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_g);
 			if(ImGui::Button("PBR_Diffuse", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&pbr_diffuse);
+			ImGui::EndChild();
+		}
+		if (ImGui::CollapsingHeader("LocalIllumination"))
+		{
+			ImGui::BeginChild("Child2", ImVec2(0, 240), true, ImGuiWindowFlags_MenuBar);
+			ImGui::Columns(1);
+			if(ImGui::Button("IBL_Diffuse", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ibl_diffuse);
+			if(ImGui::Button("IBL_Specular", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ibl_specular);
+			if(ImGui::Button("SSAO", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssao);
+			if(ImGui::Button("SSAOHB", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssaohb);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
