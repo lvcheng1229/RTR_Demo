@@ -40,16 +40,18 @@
 #include"PBR_G.h"
 #include"PBR_Diffuse.h"
 
-//Local Ilumination
+//Local and Global Ilumination
 #include"IBL_Diffuse.h"
 #include"IBL_Specular.h"
 #include"SSAO.h"
 #include"SSAOHB.h"
+#include"LTC.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+
 
 class ListUI
 {
@@ -100,11 +102,12 @@ public:
 	IBL_Specular ibl_specular;
 	SSAO ssao;
 	SSAOHB ssaohb;
+	LTC ltc;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &ssaohb;
+		rloop = &ltc;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -184,6 +187,7 @@ public:
 			if(ImGui::Button("IBL_Specular", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ibl_specular);
 			if(ImGui::Button("SSAO", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssao);
 			if(ImGui::Button("SSAOHB", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssaohb);
+			if(ImGui::Button("LTC", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ltc);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
