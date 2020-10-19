@@ -46,6 +46,7 @@
 #include"SSAO.h"
 #include"SSAOHB.h"
 #include"LTC.h"
+#include"SH_Irradiance.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -103,11 +104,12 @@ public:
 	SSAO ssao;
 	SSAOHB ssaohb;
 	LTC ltc;
+	SH_Irradiance sh_irradiance;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &ltc;
+		rloop = &sh_irradiance;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -188,6 +190,7 @@ public:
 			if(ImGui::Button("SSAO", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssao);
 			if(ImGui::Button("SSAOHB", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssaohb);
 			if(ImGui::Button("LTC", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ltc);
+			if(ImGui::Button("SH_Irradiance", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&sh_irradiance);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

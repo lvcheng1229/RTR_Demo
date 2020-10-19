@@ -83,6 +83,73 @@ f:\rtr_demo\core\SSAOHB.h(286): warning C4305: “初始化”: 从“double”�
 f:\rtr_demo\core\LTC.h(26): warning C4305: “初始化”: 从“double”到“float”截断
 f:\rtr_demo\core\LTC.h(54): warning C4305: “初始化”: 从“double”到“float”截断
 f:\rtr_demo\core\LTC.h(55): warning C4305: “初始化”: 从“double”到“float”截断
-f:\rtr_demo\core\LTC.h(128): warning C4305: “参数”: 从“double”到“GLfloat”截断
-F:\RTR_Demo\Core\main.cpp(240): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\LTC.h(131): warning C4305: “参数”: 从“double”到“GLfloat”截断
+f:\rtr_demo\core\SH_Irradiance.h(94): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SH_Irradiance.h(95): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SH_Irradiance.h(96): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+f:\rtr_demo\core\SH_Irradiance.h(193): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(194): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(198): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(199): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(202): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(204): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(207): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(209): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(212): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(213): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(217): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(218): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+f:\rtr_demo\core\SH_Irradiance.h(239): warning C4018: “<”: 有符号/无符号不匹配
+f:\rtr_demo\core\SH_Irradiance.h(247): warning C4018: “<”: 有符号/无符号不匹配
+f:\rtr_demo\core\SH_Irradiance.h(249): warning C4018: “<”: 有符号/无符号不匹配
+f:\rtr_demo\core\SH_Irradiance.h(277): warning C4018: “<”: 有符号/无符号不匹配
+F:\RTR_Demo\Core\main.cpp(243): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   Core.vcxproj -> F:\RTR_Demo\build\Core\Debug\Core.exe
