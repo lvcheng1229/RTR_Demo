@@ -38,6 +38,12 @@ void main()
         vec3 sample = TBN * samples[i]; // from tangent to view-space
         sample = fragPos + sample * radius; 
         
+        //we can rotate smmples[i] using random instead of using TBN,so gNormal is no useful in this way
+        //like smple=roateRand(samples[i])
+
+        //http://ogldev.atspace.co.uk/www/tutorial46/tutorial46.html
+        //you can see this tuturial,which is better than learnOpenGL
+
         // project sample position (to sample texture) (to get position on screen/texture)
         vec4 offset = vec4(sample, 1.0);
         offset = projection * offset; // from view to clip-space

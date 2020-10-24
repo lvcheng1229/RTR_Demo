@@ -40,20 +40,34 @@
 #include"PBR_G.h"
 #include"PBR_Diffuse.h"
 
-//Local and Global Ilumination
+//Local and Global Ilumination 7
 #include"IBL_Diffuse.h"
 #include"IBL_Specular.h"
 #include"SSAO.h"
+#include"SSAO_depth_only.h"
 #include"SSAOHB.h"
 #include"LTC.h"
 #include"SH_Irradiance.h"
+#include"SSR.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+//SSR
+//lens of fire
+//tone map
+//billboard
+//deffered rendering
+//parlalax mapping
+//tie/cluster rendering
+//TAA
+//DOF
+//fxaa
+//fftbloom
 
+//DOF和HBAO有问题
 class ListUI
 {
 public:
@@ -102,14 +116,16 @@ public:
 	IBL_Diffuse ibl_diffuse;
 	IBL_Specular ibl_specular;
 	SSAO ssao;
+	SSAO_Depth_Only ssao_depth_only;
 	SSAOHB ssaohb;
 	LTC ltc;
 	SH_Irradiance sh_irradiance;
+	SSR ssr;
 
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &sh_irradiance;
+		rloop = &ssr;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -188,9 +204,11 @@ public:
 			if(ImGui::Button("IBL_Diffuse", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ibl_diffuse);
 			if(ImGui::Button("IBL_Specular", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ibl_specular);
 			if(ImGui::Button("SSAO", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssao);
+			if(ImGui::Button("SSAO_Depth_Only", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssao_depth_only);
 			if(ImGui::Button("SSAOHB", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssaohb);
 			if(ImGui::Button("LTC", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ltc);
 			if(ImGui::Button("SH_Irradiance", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&sh_irradiance);
+			if(ImGui::Button("SSR", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssr);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();

@@ -100,10 +100,14 @@ public:
 	void update()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		float time = glfwGetTime();
 
 		glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
+		
+		glm::mat4 mat(1.0);
+		mat = glm::rotate(mat, time, glm::vec3(0, 0, 1));
 
 		commonShader->use();
 		glm::mat4 model = glm::mat4(1.0f);
@@ -116,11 +120,15 @@ public:
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.0f));
 		commonShader->setMat4("model", model);
 		commonShader->setBool("useCubemap", useCubemap);
+		commonShader->setFloat("theta", -time);
+		commonShader->setMat4("rotateMat", mat);
 		sphereObj->drawObject();
 
 		backgroundShader->use();
 		backgroundShader->setMat4("view", view);
 		backgroundShader->setMat4("projection", projection);
+
+		backgroundShader->setMat4("model", mat);
 		// skybox cube
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);

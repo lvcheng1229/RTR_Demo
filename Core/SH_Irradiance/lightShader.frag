@@ -9,17 +9,41 @@ uniform float sh_coef_g[9];
 uniform float sh_coef_b[9];
 
 uniform bool useCubemap;
+
+uniform float theta;
+
+uniform mat4 rotateMat;
 float calcSHIrradiance(float coef[9], vec3 norm)
 {
+    //float l00 = coef[0];
+    //float l1m1 = coef[1];
+    //float l10 = coef[2];
+    //float l11 = coef[3];
+    //float l2m2 = coef[4];
+    //float l2m1 = coef[5];
+    //float l20 = coef[6];
+    //float l21 = coef[7];
+    //float l22 = coef[8];
+
+    //rotate:book <global illumination> qin chun lin page 678
+
+    float costheta=cos(theta);
+    float sintheta=sin(theta);
+    
+    float cos2theta=cos(2*theta);
+    float sin2theta=sin(2*theta);
+
     float l00 = coef[0];
-    float l1m1 = coef[1];
+
+    float l1m1 = costheta*coef[1]+sintheta*coef[3];
     float l10 = coef[2];
-    float l11 = coef[3];
-    float l2m2 = coef[4];
-    float l2m1 = coef[5];
+    float l11 = -sintheta*coef[1]+costheta*coef[3];
+
+    float l2m2 = cos2theta*coef[4]+sin2theta*coef[8];
+    float l2m1 = costheta*coef[5]+sintheta*coef[7];
     float l20 = coef[6];
-    float l21 = coef[7];
-    float l22 = coef[8];
+    float l21 = -sintheta*coef[5]+costheta*coef[7];
+    float l22 = -sin2theta*coef[4]+cos2theta*coef[8];
 
     const float PI = 3.1415926535897;
     const float l0 = 1.0;
@@ -46,7 +70,7 @@ void main()
     vec3 ambient = vec3(1.0);
     if (useCubemap) 
     {
-        ambient = textureCube(environmentMap, normal).xyz;
+        ambient = textureCube(environmentMap, vec3(rotateMat*vec4(normal,1.0))).xyz;
     } 
     else 
     { 
