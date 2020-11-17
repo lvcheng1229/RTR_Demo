@@ -40,7 +40,7 @@
 #include"PBR_G.h"
 #include"PBR_Diffuse.h"
 
-//Local and Global Ilumination 7
+//Local and Global Ilumination 8
 #include"IBL_Diffuse.h"
 #include"IBL_Specular.h"
 #include"SSAO.h"
@@ -49,6 +49,9 @@
 #include"LTC.h"
 #include"SH_Irradiance.h"
 #include"SSR.h"
+
+//efficient rendering
+#include"ClusteredForwardPlus.h"
 
 #include"UltSetting.h"
 #include "imgui.h"
@@ -122,10 +125,12 @@ public:
 	SH_Irradiance sh_irradiance;
 	SSR ssr;
 
+	ClusteredForwardPlus clusteredfowardplus;
+
 	RenderLoop *rloop;
 	ListUI()
 	{
-		rloop = &ssr;
+		rloop = &clusteredfowardplus;
 		rloop->changeDemo();
 	}
 	void DrawUI()
@@ -209,6 +214,13 @@ public:
 			if(ImGui::Button("LTC", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ltc);
 			if(ImGui::Button("SH_Irradiance", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&sh_irradiance);
 			if(ImGui::Button("SSR", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&ssr);
+			ImGui::EndChild();
+		}
+		if (ImGui::CollapsingHeader("EfficientRendering"))
+		{
+			ImGui::BeginChild("Child1", ImVec2(0, 80), true, ImGuiWindowFlags_MenuBar);
+			ImGui::Columns(1);
+			if(ImGui::Button("ClusteredFowardPlus", ImVec2(-FLT_MIN, 0.0f)))changeDemo(&clusteredfowardplus);
 			ImGui::EndChild();
 		}
 		rloop->DrawUI();
