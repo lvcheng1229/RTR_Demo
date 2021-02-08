@@ -36,15 +36,15 @@ ASSIMP_BUILD_MMD_IMPORTER和ASSIMP_BUILD_X3D_IMPORTER
  - [x] Hatching (tonal art maps TAMs)
  - [x] Bloom effect blur
  - [x] Bloom effect blur+downsample
- - [x] depth of field(DOF) + scatter as your gather
- - [x] motion blur + scatter as your gather
+ - [x] depth of field(DOF) + scatter as your gather method
+ - [x] motion blur + scatter as your gather method
  - [x] basic physically based shading
  - [x] basic physically based shading with texture
  - [x] the normal distribution function(NDF) term of physically based shading
  - [x] the masking and shadowing function term(G) of physically based shading
  - [x] basic diffuse term of physically based shading
  - [x] the diffuse term of image based lighting(IBL)
- - [x] the specular term of split and sum image based lighting(IBL)
+ - [x] the specular term using split and sum metod for image based lighting(IBL)
  - [x] basic screen space ambient Occulusion(basic SSAO)
  - [x] Horizon-based Ambient Occlusion(HBAO)
  - [x] linearly trnasformed cosines(LTCs)
