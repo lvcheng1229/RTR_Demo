@@ -20,7 +20,7 @@ ASSIMP_BUILD_MMD_IMPORTER和ASSIMP_BUILD_X3D_IMPORTER
  - [x] basic shadow map
  - [x] Percentage-Closer Filter(PCF)
  - [x] Percentage-Closer Soft Shadow(PCSS)
- - [x] cascaded shaow map(ESM)
+ - [x] cascaded shaow map(CSM)
  - [x] variance shadow map(VSM)
  - [x] exponential shadow map(ESM)
  - [x] improved exponential shadow map
