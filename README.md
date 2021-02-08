@@ -32,7 +32,7 @@ ASSIMP_BUILD_MMD_IMPORTER和ASSIMP_BUILD_X3D_IMPORTER
  - [x] X-Toon highlight
  - [x] X-Toon backlight
  - [x] X-Toon Aerial Perpective
- - [x] solid "hard" lines using in CAD
+ - [x] solid "hard" lines used in CAD
  - [x] Hatching (tonal art maps TAMs)
  - [x] Bloom effect blur
  - [x] Bloom effect blur+downsample
