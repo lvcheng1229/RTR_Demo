@@ -13,4 +13,28 @@ ASSIMP_BUILD_MMD_IMPORTER和ASSIMP_BUILD_X3D_IMPORTER
 将RTR_Demo\assimp-4.0.0\build\code\Debug下的assimp-vc140-mt.dll复制到RTR_Demo\build\Core\Debug
 
 # Demo列表
- - [x] HBAO
+ - [x] Plane Shadow(Projection Shadow)
+ - [x] Shadow Volume
+ - [x] basic shadow map
+ - [x] Percentage-Closer Filter(PCF)
+ - [x] Percentage-Closer Soft Shadow(PCSS)
+ - [x] cascaded shaow map(ESM)
+ - [x] variance shadow map(VSM)
+ - [x] exponential shadow map(ESM)
+ - [x] improved exponential shadow map
+ - [x] convolution shadow map
+ - [x] outline rendering normal edge method
+ - [x] outline rendering procedural grometry method + z-bias
+ - [x] outline rendering procedural grometry method + triangle fattening
+ - [x] outline rendering image based method
+ - [x] X-Toon highlight
+ - [x] X-Toon backlight
+ - [x] X-Toon Aerial Perpective
+ - [x] solid "hard" lines using in CAD
+ - [x] Hatching (tonal art maps TAMs)
+ - [x] Bloom effect blur
+ - [x] Bloom effect blur+downsample
+ - [x] depth of field(DOF) + scatter as your gather
+ - [x] motion blur + scatter as your gather
+ - [x] Horizon-based Ambient Occlusion(HBAO)
+ 
