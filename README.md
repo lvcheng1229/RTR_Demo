@@ -11,3 +11,6 @@ ASSIMP_BUILD_MMD_IMPORTER和ASSIMP_BUILD_X3D_IMPORTER
 源码路径为：你的代码目录/RTR_Demo  
 编译路径随意  
 将RTR_Demo\assimp-4.0.0\build\code\Debug下的assimp-vc140-mt.dll复制到RTR_Demo\build\Core\Debug
+
+# Demo列表
+-[x]HBAO
